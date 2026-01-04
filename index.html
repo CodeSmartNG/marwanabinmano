@@ -4,9 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marwana Bin Mano - Picture Album</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- FIXED: Changed styles.css to style.css -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ADDED: Container class */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ADDED: Header content flex layout */
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        /* ADDED: Navigation list styling */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ADDED: Auth buttons styling */
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* ADDED: Grid layout for folders and pictures */
+        .folders-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 3rem;
+        }
+
+        .pictures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* ADDED: Image display fixes */
+        .picture-image {
+            height: 220px;
+            width: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .picture-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .picture-image i {
+            font-size: 4rem;
+            color: var(--primary-swing);
+            opacity: 0.7;
+            position: absolute;
+            display: none; /* Hide icon when image exists */
+        }
+
+        /* Show icon only when no image */
+        .picture-image:not(:has(img)) i {
+            display: block;
+        }
+
         /* Swing Design Specific Styles */
         :root {
             --primary-swing: #4361ee;
@@ -64,6 +142,8 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: 600;
+            color: white;
+            text-decoration: none;
         }
 
         nav a:hover, nav a.active {
@@ -156,11 +236,6 @@
         }
 
         /* Cards Swing Styling */
-        .folders-container, .pictures-grid {
-            display: grid;
-            gap: 30px;
-        }
-
         .folder-card, .picture-card {
             background: white;
             border-radius: 25px;
@@ -232,39 +307,6 @@
             gap: 5px;
         }
 
-        .picture-image {
-            height: 220px;
-            width: 100%;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .picture-image i {
-            font-size: 4rem;
-            color: var(--primary-swing);
-            opacity: 0.7;
-        }
-
-        .picture-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient-swing);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .picture-card:hover .picture-image::before {
-            opacity: 0.1;
-        }
-
         .picture-description {
             color: #666;
             font-size: 0.95rem;
@@ -272,7 +314,7 @@
             line-height: 1.6;
             display: -webkit-box;
             -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            -webkit-box-orvent: vertical;
             overflow: hidden;
         }
 
@@ -1074,7 +1116,14 @@
                 }
             ];
             
-            // Sample pictures
+            // Sample pictures with sample image data (gradient images)
+            const sampleImages = [
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234361ee'/%3E%3Cstop offset='100%25' stop-color='%233a0ca3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EMountain Sunrise%3C/text%3E%3C/svg%3E",
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2327ae60'/%3E%3Cstop offset='100%25' stop-color='%23219653'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EForest Path%3C/text%3E%3C/svg%3E",
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234cc9f0'/%3E%3Cstop offset='100%25' stop-color='%234895ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EOcean Waves%3C/text%3E%3C/svg%3E",
+                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f72585'/%3E%3Cstop offset='100%25' stop-color='%23b5179e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3ECity Skyline%3C/text%3E%3C/svg%3E"
+            ];
+            
             const samplePictures = [
                 {
                     id: 1,
@@ -1082,7 +1131,7 @@
                     title: "Mountain Sunrise",
                     description: "Beautiful sunrise over snow-capped mountains with vibrant orange and pink sky reflections.",
                     price: 49.99,
-                    image: ""
+                    image: sampleImages[0]
                 },
                 {
                     id: 2,
@@ -1090,7 +1139,7 @@
                     title: "Forest Path",
                     description: "Serene path through an autumn forest with golden leaves covering the ground.",
                     price: 39.99,
-                    image: ""
+                    image: sampleImages[1]
                 },
                 {
                     id: 3,
@@ -1098,7 +1147,7 @@
                     title: "Ocean Waves",
                     description: "Powerful ocean waves crashing on rocky shore at sunset.",
                     price: 59.99,
-                    image: ""
+                    image: sampleImages[2]
                 },
                 {
                     id: 4,
@@ -1106,7 +1155,7 @@
                     title: "City Skyline",
                     description: "Modern city skyline at dusk with illuminated buildings against twilight sky.",
                     price: 69.99,
-                    image: ""
+                    image: sampleImages[3]
                 },
                 {
                     id: 5,
@@ -1114,7 +1163,7 @@
                     title: "Urban Street",
                     description: "Vibrant street in an urban neighborhood with colorful buildings and street art.",
                     price: 44.99,
-                    image: ""
+                    image: sampleImages[0]
                 },
                 {
                     id: 6,
@@ -1122,7 +1171,7 @@
                     title: "Bridge Architecture",
                     description: "Architectural details of a historic suspension bridge at golden hour.",
                     price: 54.99,
-                    image: ""
+                    image: sampleImages[1]
                 },
                 {
                     id: 7,
@@ -1130,7 +1179,7 @@
                     title: "Portrait of a Woman",
                     description: "Elegant portrait with soft lighting and thoughtful expression.",
                     price: 79.99,
-                    image: ""
+                    image: sampleImages[2]
                 },
                 {
                     id: 8,
@@ -1138,7 +1187,7 @@
                     title: "Thoughtful Expression",
                     description: "Close-up portrait capturing deep emotion and character in the eyes.",
                     price: 89.99,
-                    image: ""
+                    image: sampleImages[3]
                 },
                 {
                     id: 9,
@@ -1146,7 +1195,7 @@
                     title: "Colorful Abstract",
                     description: "Vibrant abstract painting with bold colors and dynamic brush strokes.",
                     price: 99.99,
-                    image: ""
+                    image: sampleImages[0]
                 },
                 {
                     id: 10,
@@ -1154,7 +1203,7 @@
                     title: "Geometric Patterns",
                     description: "Abstract art with geometric patterns and harmonious color combinations.",
                     price: 74.99,
-                    image: ""
+                    image: sampleImages[1]
                 }
             ];
             
@@ -1186,7 +1235,7 @@
                     <div class="folder-info">
                         <h3 class="folder-title">${folder.title}</h3>
                         <p class="folder-count">
-                            <i class="fas fa-image"></i> ${folder.pictureCount} pictures
+                            <i class="fas fa-image"></i> ${folder.pictureCount || 0} pictures
                         </p>
                     </div>
                 `;
@@ -1197,19 +1246,23 @@
         }
 
         function openFolder(folderId) {
-            const folder = getFolderById(folderId);
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const folder = folders.find(f => f.id === folderId);
+            
             if (!folder) return;
             
-            // Update UI
+            // Update folder name display
             document.getElementById('folder-name-display').textContent = folder.title;
+            
+            // Show pictures section, hide folders
             document.getElementById('folders-container').style.display = 'none';
             document.getElementById('pictures-section').style.display = 'block';
             
-            // Load pictures
-            loadPictures(folderId);
+            // Render pictures for this folder
+            renderPictures(folderId);
         }
 
-        function loadPictures(folderId) {
+        function renderPictures(folderId) {
             const picturesGrid = document.getElementById('pictures-grid');
             const loadingElement = document.getElementById('pictures-loading');
             
@@ -1245,9 +1298,16 @@
                 folderPictures.forEach(picture => {
                     const pictureCard = document.createElement('div');
                     pictureCard.className = 'picture-card';
+                    
+                    // Check if picture has image data
+                    const hasImage = picture.image && picture.image.startsWith('data:image');
+                    
                     pictureCard.innerHTML = `
                         <div class="picture-image">
-                            <i class="fas fa-image"></i>
+                            ${hasImage ? 
+                                `<img src="${picture.image}" alt="${picture.title}">` : 
+                                `<i class="fas fa-image"></i>`
+                            }
                         </div>
                         <div class="picture-info">
                             <h3 class="picture-title">${picture.title}</h3>
@@ -1286,6 +1346,15 @@
             document.getElementById('modal-picture-title').textContent = picture.title;
             document.getElementById('modal-picture-description').textContent = picture.description;
             document.getElementById('modal-picture-price').textContent = `$${picture.price.toFixed(2)}`;
+            
+            // Update modal image
+            const modalImage = document.getElementById('modal-picture-image');
+            if (picture.image && picture.image.startsWith('data:image')) {
+                modalImage.src = picture.image;
+                modalImage.style.display = 'block';
+            } else {
+                modalImage.style.display = 'none';
+            }
             
             // Set up buy button
             const buyBtn = document.getElementById('buy-btn');

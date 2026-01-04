@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Marwana Bin Mano</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Admin-specific swing design enhancements */
+        :root {
+            --primary-swing: #4361ee;
+            --secondary-swing: #3a0ca3;
+            --accent-swing: #f72585;
+            --light-swing: #f8f9fa;
+            --dark-swing: #212529;
+            --success-swing: #4cc9f0;
+            --shadow-swing: 0 10px 30px rgba(67, 97, 238, 0.15);
+            --gradient-swing: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --gradient-accent: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+        }
+
+        /* File upload specific styles */
+        .file-upload-container {
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .file-preview {
+            border: 3px dashed var(--primary-swing);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(67, 97, 238, 0.05);
+            transition: all 0.4s ease;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .file-preview:hover {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: var(--accent-swing);
+            transform: translateY(-5px);
+        }
+
+        .file-preview i {
+            font-size: 4rem;
+            color: var(--primary-swing);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-preview:hover i {
+            color: var(--accent-swing);
+            transform: scale(1.1);
+        }
+
+        .file-preview p {
+            color: #666;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 15px;
+            object-fit: contain;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid white;
+        }
+
+        #picture-file {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        .upload-hint {
+            background: var(--gradient-swing);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .upload-hint:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Swing design admin enhancements */
+        .admin-header {
+            background: var(--gradient-swing);
+            box-shadow: 0 5px 20px rgba(67, 97, 238, 0.2);
+        }
+
+        .admin-nav a {
+            position: relative;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-nav a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-nav a:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .page-title {
+            background: var(--gradient-swing);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-weight: 800;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--shadow-swing);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-swing);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.25);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-swing);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+            color: var(--dark-swing);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: var(--shadow-swing);
+            border: none;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-container th {
+            background: var(--gradient-swing);
+            color: white;
+            font-weight: 600;
+            padding: 1.2rem;
+            text-align: left;
+        }
+
+        .table-container td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .table-container tr:hover {
+            background: rgba(67, 97, 238, 0.03);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-sm {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Form enhancements for swing design */
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-swing);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary-swing);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            outline: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .file-preview {
+                min-height: 200px;
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-nav" style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="logo">
+                    <i class="fas fa-camera-retro"></i>
+                    <h1 style="color: white;">Marwana Bin Mano - Admin</h1>
+                </div>
+                <nav style="display: flex; gap: 10px;">
+                    <a href="#" id="dashboard-link" class="active">Dashboard</a>
+                    <a href="#" id="folders-link">Folders</a>
+                    <a href="#" id="pictures-link">Pictures</a>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-secondary" id="logout-btn" style="background: rgba(255,255,255,0.2); border-color: white;">Logout</button>
+                    <a href="index.html" class="btn btn-primary" style="background: white; color: var(--primary-swing);">View Site</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Admin Content -->
+    <main>
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section class="dashboard-section active" id="dashboard-section">
+                <h2 class="page-title">Admin Dashboard</h2>
+                
+                <!-- Stats -->
+                <div class="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 2rem 0 3rem;">
+                    <div class="stat-card">
+                        <i class="fas fa-folder"></i>
+                        <h3 id="total-folders">0</h3>
+                        <p>Total Folders</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-image"></i>
+                        <h3 id="total-pictures">0</h3>
+                        <p>Total Pictures</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h3 id="total-value">$0.00</h3>
+                        <p>Total Value</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Upload</h3>
+                        <p>Phone Files Ready</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="admin-actions" style="display: flex; gap: 15px; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" id="add-folder-btn" style="background: var(--gradient-swing);">
+                        <i class="fas fa-plus"></i> Add New Folder
+                    </button>
+                    <button class="btn btn-success" id="add-picture-btn" style="background: var(--gradient-accent);">
+                        <i class="fas fa-plus"></i> Add New Picture
+                    </button>
+                    <button class="btn btn-warning" onclick="showUploadGuide()" style="background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);">
+                        <i class="fas fa-question-circle"></i> Upload Guide
+                    </button>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="table-container">
+                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        Recent Pictures
+                    </h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Folder</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pictures-table">
+                            <!-- Pictures will be loaded here by JavaScript -->
+                            <tr id="no-pictures-msg"><td colspan="5" style="text-align: center; padding: 3rem; color: #999;">No pictures added yet. Click "Add New Picture" to get started.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Folders Management Section -->
+            <section class="dashboard-section" id="folders-section" style="display: none;">
+                <h2 class="page-title">Manage Folders</h2>
+                
+                <!-- Add/Edit Folder Form -->
+                <div class="table-container" style="margin-bottom: 2rem;">
+                    <div class="modal-header" style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0;">
+                        <h3 id="folder-form-title" style="margin: 0; font-size: 1.5rem;">Add New Folder</h3>
+                    </div>
+                    <div class="modal-body" style="padding: 2rem;">
+                        <form id="folder-form">
+                            <input type="hidden" id="folder-id" value="">
+                            <div class="form-group">
+                                <label for="folder-title">Folder Title</label>
+                                <input type="text" id="folder-title" required placeholder="Enter folder name">
+                            </div>
+                            <div class="form-group">
+                                <label for="folder-icon">Folder Icon (FontAwesome class)</label>
+                                <input type="text" id="folder-icon" value="fas fa-folder" required placeholder="fas fa-folder">
+                                <small style="color: #666; display: block; margin-top: 0.5rem;">Examples: fas fa-folder, fas fa-image, fas fa-city, fas fa-tree, fas fa-mountain</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" style="background: var(--gradient-swing); margin-top: 1.5rem; padding: 1rem; font-size: 1.1rem; border-radius: 15px;">
+                                <i class="fas fa-save"></i> Save Folder
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Folders Table -->
+                <div class="table-container">
+                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        All Folders
+                    </h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Folder</th>
+                                <th>Pictures</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="folders-table">
+                            <!-- Folders will be loaded here by JavaScript -->
+                            <tr id="no-folders-msg"><td colspan="4" style="text-align: center; padding: 3rem; color: #999;">No folders created yet. Click "Add New Folder" to get started.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Pictures Management Section -->
+            <section class="dashboard-section" id="pictures-section" style="display: none;">
+                <h2 class="page-title">Manage Pictures</h2>
+                
+                <!-- Add/Edit Picture Form -->
+                <div class="table-container" style="margin-bottom: 2rem;">
+                    <div class="modal-header" style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0;">
+                        <h3 id="picture-form-title" style="margin: 0; font-size: 1.5rem;">Add New Picture</h3>
+                    </div>
+                    <div class="modal-body" style="padding: 2rem;">
+                        <form id="picture-form">
+                            <input type="hidden" id="picture-id" value="">
+                            <div class="form-group">
+                                <label for="picture-title">Picture Title</label>
+                                <input type="text" id="picture-title" required placeholder="Enter picture title">
+                            </div>
+                            <div class="form-group">
+                                <label for="picture-description">Description</label>
+                                <textarea id="picture-description" rows="3" required placeholder="Describe this picture"></textarea>
+                            </div>
+                            
+                            <!-- NEW: File Upload Section -->
+                            <div class="form-group">
+                                <label for="picture-file">Upload Image from Phone</label>
+                                <div class="file-upload-container">
+                                    <input type="file" id="picture-file" accept="image/*" required>
+                                    <div class="file-preview" id="image-preview">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Tap here or click to select image</p>
+                                        <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
+                                        <div class="upload-hint">
+                                            <i class="fas fa-mobile-alt"></i> Select from Phone
+                                        </div>
+                                    </div>
+                                </div>
+                                <small style="color: #666; display: block; margin-top: 0.5rem;">Maximum file size: 10MB. Recommended: High-quality photos for best results.</small>
+                            </div>
+                            
+                            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 1.5rem 0;">
+                                <div class="form-group">
+                                    <label for="picture-price">Price ($)</label>
+                                    <input type="number" id="picture-price" min="0" step="0.01" required placeholder="0.00">
+                                </div>
+                                <div class="form-group">
+                                    <label for="picture-folder">Folder</label>
+                                    <select id="picture-folder" required>
+                                        <option value="">Select a folder</option>
+                                        <!-- Options will be loaded dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" style="background: var(--gradient-swing); margin-top: 1rem; padding: 1rem; font-size: 1.1rem; border-radius: 15px;">
+                                <i class="fas fa-save"></i> Save Picture
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Pictures Table -->
+                <div class="table-container">
+                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        All Pictures
+                    </h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Folder</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pictures-table-2">
+                            <!-- Pictures will be loaded here by JavaScript -->
+                            <tr id="no-pictures-msg-2"><td colspan="5" style="text-align: center; padding: 3rem; color: #999;">No pictures added yet. Upload your first picture above.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--dark-swing); color: white; padding: 2rem 0; margin-top: 3rem; text-align: center;">
+        <div class="container">
+            <p>&copy; 2023 Marwana Bin Mano. Admin Panel</p>
+            <p style="color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Upload pictures directly from your phone with our mobile-friendly interface</p>
+        </div>
+    </footer>
+
+    <!-- Upload Guide Modal -->
+    <div id="upload-guide-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: white; border-radius: 25px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;">
+            <div style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 1.5rem;">Mobile Upload Guide</h3>
+                <button onclick="closeUploadGuide()" style="background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer;">&times;</button>
+            </div>
+            <div style="padding: 2rem;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                    <div>
+                        <h4 style="margin: 0 0 0.3rem 0;">Tap the Upload Area</h4>
+                        <p style="color: #666; margin: 0;">Click the blue upload box or "Select from Phone" button</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                    <div>
+                        <h4 style="margin: 0 0 0.3rem 0;">Choose Image Source</h4>
+                        <p style="color: #666; margin: 0;">Select "Camera" to take a new photo or "Gallery" to choose existing</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                    <div>
+                        <h4 style="margin: 0 0 0.3rem 0;">Preview & Complete Form</h4>
+                        <p style="color: #666; margin: 0;">Add title, description, price and select folder</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 2rem;">
+                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">4</div>
+                    <div>
+                        <h4 style="margin: 0 0 0.3rem 0;">Save Picture</h4>
+                        <p style="color: #666; margin: 0;">Click "Save Picture" to add to your gallery</p>
+                    </div>
+                </div>
+                <button onclick="closeUploadGuide()" style="background: var(--gradient-swing); color: white; border: none; padding: 1rem 2rem; border-radius: 15px; font-weight: 600; width: 100%; cursor: pointer;">
+                    Got it, let's upload!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple JavaScript for admin panel interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation
+            document.getElementById('dashboard-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('dashboard-section');
+                setActiveNav(this);
+            });
+            
+            document.getElementById('folders-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('folders-section');
+                setActiveNav(this);
+            });
+            
+            document.getElementById('pictures-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('pictures-section');
+                setActiveNav(this);
+            });
+            
+            // Buttons
+            document.getElementById('add-folder-btn').addEventListener('click', function() {
+                showSection('folders-section');
+                setActiveNav(document.getElementById('folders-link'));
+                document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('add-picture-btn').addEventListener('click', function() {
+                showSection('pictures-section');
+                setActiveNav(document.getElementById('pictures-link'));
+                document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // File upload preview
+            const fileInput = document.getElementById('picture-file');
+            const preview = document.getElementById('image-preview');
+            
+            if (fileInput && preview) {
+                fileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        // Validate file size (10MB limit)
+                        if (file.size > 10 * 1024 * 1024) {
+                            alert('File is too large. Maximum size is 10MB.');
+                            this.value = '';
+                            preview.innerHTML = `
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Tap here or click to select image</p>
+                                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
+                                <div class="upload-hint">
+                                    <i class="fas fa-mobile-alt"></i> Select from Phone
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        // Validate file type
+                        if (!file.type.match('image.*')) {
+                            alert('Please select an image file (JPG, PNG, GIF).');
+                            this.value = '';
+                            preview.innerHTML = `
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Tap here or click to select image</p>
+                                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
+                                <div class="upload-hint">
+                                    <i class="fas fa-mobile-alt"></i> Select from Phone
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        // Create preview
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.innerHTML = `
+                                <img src="${e.target.result}" alt="Preview">
+                                <p style="margin-top: 1rem; color: var(--success-swing); font-weight: 600;">
+                                    <i class="fas fa-check-circle"></i> Ready to upload!
+                                </p>
+                                <p style="font-size: 0.9rem;">${file.name}</p>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Make the whole preview area clickable
+                preview.addEventListener('click', function() {
+                    fileInput.click();
+                });
+            }
+            
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Check if user is logged in
+            if (!localStorage.getItem('currentUser')) {
+                window.location.href = 'index.html';
+            }
+            
+            // Load initial data
+            updateAdminStats();
+            loadFoldersTable();
+            loadPicturesTable();
+        });
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        
+        function setActiveNav(activeLink) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.admin-nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to clicked link
+            activeLink.classList.add('active');
+        }
+        
+        function updateAdminStats() {
+            // This would typically load from your data storage
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+            
+            const totalValue = pictures.reduce((sum, pic) => sum + (parseFloat(pic.price) || 0), 0);
+            
+            document.getElementById('total-folders').textContent = folders.length;
+            document.getElementById('total-pictures').textContent = pictures.length;
+            document.getElementById('total-value').textContent = `$${totalValue.toFixed(2)}`;
+        }
+        
+        function loadFoldersTable() {
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const tableBody = document.getElementById('folders-table');
+            const noFoldersMsg = document.getElementById('no-folders-msg');
+            
+            if (folders.length === 0) {
+                if (noFoldersMsg) noFoldersMsg.style.display = 'table-row';
+                return;
+            }
+            
+            if (noFoldersMsg) noFoldersMsg.style.display = 'none';
+            tableBody.innerHTML = '';
+            
+            folders.forEach(folder => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${folder.id || 'N/A'}</td>
+                    <td><i class="${folder.image || 'fas fa-folder'}"></i> ${folder.title || 'Untitled'}</td>
+                    <td>${folder.pictureCount || 0}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-warning btn-sm" onclick="editFolder(${folder.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteFolder(${folder.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function loadPicturesTable() {
+            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const tableBody = document.getElementById('pictures-table');
+            const tableBody2 = document.getElementById('pictures-table-2');
+            const noPicturesMsg = document.getElementById('no-pictures-msg');
+            const noPicturesMsg2 = document.getElementById('no-pictures-msg-2');
+            
+            if (pictures.length === 0) {
+                if (noPicturesMsg) noPicturesMsg.style.display = 'table-row';
+                if (noPicturesMsg2) noPicturesMsg2.style.display = 'table-row';
+                return;
+            }
+            
+            if (noPicturesMsg) noPicturesMsg.style.display = 'none';
+            if (noPicturesMsg2) noPicturesMsg2.style.display = 'none';
+            
+            // Load for dashboard table
+            if (tableBody) {
+                tableBody.innerHTML = '';
+                // Show only recent 5 pictures
+                const recentPictures = pictures.slice(-5).reverse();
+                
+                recentPictures.forEach(pic => {
+                    const folder = folders.find(f => f.id === pic.folderId);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pic.id || 'N/A'}</td>
+                        <td>${pic.title || 'Untitled'}</td>
+                        <td>${folder ? folder.title : 'Uncategorized'}</td>
+                        <td>$${parseFloat(pic.price || 0).toFixed(2)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-warning btn-sm" onclick="editPicture(${pic.id})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deletePicture(${pic.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            // Load for pictures management table
+            if (tableBody2) {
+                tableBody2.innerHTML = '';
+                pictures.forEach(pic => {
+                    const folder = folders.find(f => f.id === pic.folderId);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pic.id || 'N/A'}</td>
+                        <td>${pic.title || 'Untitled'}</td>
+                        <td>${folder ? folder.title : 'Uncategorized'}</td>
+                        <td>$${parseFloat(pic.price || 0).toFixed(2)}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-warning btn-sm" onclick="editPicture(${pic.id})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deletePicture(${pic.id})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody2.appendChild(row);
+                });
+            }
+            
+            // Update folder dropdown in picture form
+            const folderSelect = document.getElementById('picture-folder');
+            if (folderSelect) {
+                folderSelect.innerHTML = '<option value="">Select a folder</option>';
+                folders.forEach(folder => {
+                    const option = document.createElement('option');
+                    option.value = folder.id;
+                    option.textContent = folder.title;
+                    folderSelect.appendChild(option);
+                });
+            }
+        }
+        
+        function editFolder(folderId) {
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const folder = folders.find(f => f.id === folderId);
+            
+            if (folder) {
+                document.getElementById('folder-id').value = folder.id;
+                document.getElementById('folder-title').value = folder.title;
+                document.getElementById('folder-icon').value = folder.image;
+                document.getElementById('folder-form-title').textContent = 'Edit Folder';
+                
+                showSection('folders-section');
+                setActiveNav(document.getElementById('folders-link'));
+                document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function editPicture(pictureId) {
+            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+            const picture = pictures.find(p => p.id === pictureId);
+            
+            if (picture) {
+                document.getElementById('picture-id').value = picture.id;
+                document.getElementById('picture-title').value = picture.title;
+                document.getElementById('picture-description').value = picture.description;
+                document.getElementById('picture-price').value = picture.price;
+                document.getElementById('picture-form-title').textContent = 'Edit Picture';
+                
+                // Set folder selection
+                const folderSelect = document.getElementById('picture-folder');
+                if (folderSelect) {
+                    folderSelect.value = picture.folderId;
+                }
+                
+                // Update preview
+                const preview = document.getElementById('image-preview');
+                if (preview && picture.image && picture.image.startsWith('data:image')) {
+                    preview.innerHTML = `
+                        <img src="${picture.image}" alt="Preview">
+                        <p style="margin-top: 1rem; color: var(--success-swing); font-weight: 600;">
+                            <i class="fas fa-check-circle"></i> Current Image
+                        </p>
+                    `;
+                }
+                
+                showSection('pictures-section');
+                setActiveNav(document.getElementById('pictures-link'));
+                document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function deleteFolder(folderId) {
+            if (confirm('Are you sure you want to delete this folder? All pictures in this folder will also be deleted.')) {
+                let folders = JSON.parse(localStorage.getItem('folders')) || [];
+                let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+                
+                // Delete pictures in this folder
+                pictures = pictures.filter(p => p.folderId !== folderId);
+                
+                // Delete the folder
+                folders = folders.filter(f => f.id !== folderId);
+                
+                localStorage.setItem('folders', JSON.stringify(folders));
+                localStorage.setItem('pictures', JSON.stringify(pictures));
+                
+                loadFoldersTable();
+                loadPicturesTable();
+                updateAdminStats();
+                
+                alert('Folder deleted successfully!');
+            }
+        }
+        
+        function deletePicture(pictureId) {
+            if (confirm('Are you sure you want to delete this picture?')) {
+                let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+                pictures = pictures.filter(p => p.id !== pictureId);
+                
+                localStorage.setItem('pictures', JSON.stringify(pictures));
+                
+                loadPicturesTable();
+                updateAdminStats();
+                
+                alert('Picture deleted successfully!');
+            }
+        }
+        
+        // Form submissions
+        document.getElementById('folder-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const folderId = document.getElementById('folder-id').value;
+            const title = document.getElementById('folder-title').value;
+            const icon = document.getElementById('folder-icon').value;
+            
+            let folders = JSON.parse(localStorage.getItem('folders')) || [];
+            
+            if (folderId) {
+                // Edit existing folder
+                const index = folders.findIndex(f => f.id === parseInt(folderId));
+                if (index !== -1) {
+                    folders[index] = {
+                        ...folders[index],
+                        title: title,
+                        image: icon
+                    };
+                }
+            } else {
+                // Add new folder
+                const newId = folders.length > 0 ? Math.max(...folders.map(f => f.id)) + 1 : 1;
+                folders.push({
+                    id: newId,
+                    title: title,
+                    image: icon,
+                    pictureCount: 0
+                });
+            }
+            
+            localStorage.setItem('folders', JSON.stringify(folders));
+            
+            loadFoldersTable();
+            updateAdminStats();
+            
+            // Reset form
+            this.reset();
+            document.getElementById('folder-id').value = '';
+            document.getElementById('folder-form-title').textContent = 'Add New Folder';
+            
+            alert('Folder saved successfully!');
+        });
+        
+        document.getElementById('picture-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const pictureId = document.getElementById('picture-id').value;
+            const title = document.getElementById('picture-title').value;
+            const description = document.getElementById('picture-description').value;
+            const price = parseFloat(document.getElementById('picture-price').value);
+            const folderId = parseInt(document.getElementById('picture-folder').value);
+            const fileInput = document.getElementById('picture-file');
+            
+            if (!folderId) {
+                alert('Please select a folder for the picture.');
+                return;
+            }
+            
+            let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+            let folders = JSON.parse(localStorage.getItem('folders')) || [];
+            
+            // Handle image data
+            let imageData = '';
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imageData = e.target.result;
+                    completePictureSave(pictureId, title, description, price, folderId, imageData, pictures, folders);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // For editing without changing image
+                completePictureSave(pictureId, title, description, price, folderId, null, pictures, folders);
+            }
+        });
+        
+        function completePictureSave(pictureId, title, description, price, folderId, imageData, pictures, folders) {
+            if (pictureId) {
+                // Edit existing picture
+                const index = pictures.findIndex(p => p.id === parseInt(pictureId));
+                if (index !== -1) {
+                    // Update folder picture counts if folder changed
+                    const oldFolderId = pictures[index].folderId;
+                    if (oldFolderId !== folderId) {
+                        updateFolderCount(oldFolderId, -1, folders);
+                        updateFolderCount(folderId, 1, folders);
+                    }
+                    
+                    // Update the picture
+                    pictures[index] = {
+                        ...pictures[index],
+                        title: title,
+                        description: description,
+                        price: price,
+                        folderId: folderId,
+                        image: imageData || pictures[index].image
+                    };
+                }
+            } else {
+                // Add new picture
+                const newId = pictures.length > 0 ? Math.max(...pictures.map(p => p.id)) + 1 : 1;
+                pictures.push({
+                    id: newId,
+                    title: title,
+                    description: description,
+                    price: price,
+                    folderId: folderId,
+                    image: imageData || ''
+                });
+                
+                updateFolderCount(folderId, 1, folders);
+            }
+            
+            localStorage.setItem('pictures', JSON.stringify(pictures));
+            localStorage.setItem('folders', JSON.stringify(folders));
+            
+            loadPicturesTable();
+            updateAdminStats();
+            
+            // Reset form
+            document.getElementById('picture-form').reset();
+            document.getElementById('picture-id').value = '';
+            document.getElementById('image-preview').innerHTML = `
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Tap here or click to select image</p>
+                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
+                <div class="upload-hint">
+                    <i class="fas fa-mobile-alt"></i> Select from Phone
+                </div>
+            `;
+            document.getElementById('picture-form-title').textContent = 'Add New Picture';
+            
+            alert('Picture saved successfully!');
+        }
+        
+        function updateFolderCount(folderId, change, folders) {
+            const folderIndex = folders.findIndex(f => f.id === folderId);
+            if (folderIndex !== -1) {
+                folders[folderIndex].pictureCount = (folders[folderIndex].pictureCount || 0) + change;
+                if (folders[folderIndex].pictureCount < 0) {
+                    folders[folderIndex].pictureCount = 0;
+                }
+            }
+        }
+        
+        function showUploadGuide() {
+            document.getElementById('upload-guide-modal').style.display = 'flex';
+        }
+        
+        function closeUploadGuide() {
+            document.getElementById('upload-guide-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// script.js - Complete with working image display
+// script.js - Fixed version with proper image saving
 
 // Global variables
 let currentUser = null;
@@ -32,8 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-
 // Updated loadSampleData function - No sample data
 function loadSampleData() {
     // Start with just one empty folder
@@ -51,11 +49,6 @@ function loadSampleData() {
     
     saveToLocalStorage();
 }
-    
-    
-    
-    
-    
 
 // Set up all event listeners
 function setupEventListeners() {
@@ -202,7 +195,7 @@ function openFolder(folderId) {
     renderPictures(folderId);
 }
 
-// Render pictures for a specific folder
+// FIXED: Render pictures for a specific folder
 function renderPictures(folderId) {
     const picturesGrid = document.getElementById('pictures-grid');
     if (!picturesGrid) return;
@@ -233,7 +226,7 @@ function renderPictures(folderId) {
         pictureCard.innerHTML = `
             <div class="picture-image">
                 ${hasImage ? 
-                    `<img src="${picture.image}" alt="${picture.title}" style="width: 100%; height: 100%; object-fit: cover;">` : 
+                    `<img src="${picture.image}" alt="${picture.title}">` : 
                     `<i class="fas fa-image"></i>`
                 }
             </div>
@@ -242,17 +235,19 @@ function renderPictures(folderId) {
                 <p class="picture-description">${picture.description}</p>
                 <div class="picture-footer">
                     <div class="picture-price">$${picture.price.toFixed(2)}</div>
-                    <button class="btn btn-primary view-picture-btn" data-id="${picture.id}">View Details</button>
+                    <button class="btn btn-primary view-picture-btn" data-id="${picture.id}">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
                 </div>
             </div>
         `;
         
         picturesGrid.appendChild(pictureCard);
-    });
-    
-    // Add event listeners to view buttons
-    document.querySelectorAll('.view-picture-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        
+        // FIXED: Add event listener to the button directly
+        const viewBtn = pictureCard.querySelector('.view-picture-btn');
+        viewBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             const pictureId = parseInt(this.getAttribute('data-id'));
             openPictureModal(pictureId);
         });
@@ -680,6 +675,11 @@ function handlePictureSubmit(e) {
         return;
     }
     
+    if (isNaN(price) || price <= 0) {
+        alert('Please enter a valid price greater than 0.');
+        return;
+    }
+    
     // Load current data
     pictures = JSON.parse(localStorage.getItem('pictures')) || [];
     folders = JSON.parse(localStorage.getItem('folders')) || [];
@@ -758,6 +758,11 @@ function completePictureSave(pictureId, title, description, price, folderId, ima
     document.getElementById('image-preview').innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
     
     alert('Picture saved successfully!');
+    
+    // Reload the main page if we're on index.html
+    if (!window.location.pathname.includes('admin.html')) {
+        renderFolders();
+    }
 }
 
 function updateFolderPictureCount(folderId, change) {

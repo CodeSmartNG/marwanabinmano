@@ -1,127 +1,10 @@
-// script.js
+// script.js - Complete with working save functionality
 
 // Global variables
 let currentUser = null;
 let folders = JSON.parse(localStorage.getItem('folders')) || [];
 let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
 let currentFolderId = null;
-
-// Add this code to your existing script.js
-
-// 1. Handle image preview when a file is selected
-document.getElementById('picture-file')?.addEventListener('change', function(event) {
-    const preview = document.getElementById('image-preview');
-    const file = event.target.files[0];
-    
-    if (file) {
-      // Check file size (10MB limit)
-      if (file.size > 10 * 1024 * 1024) {
-        alert('File is too large. Maximum size is 10MB[citation:1].');
-        this.value = ''; // Clear the input
-        preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>No image selected. Tap to browse.</p>';
-        return;
-      }
-      
-      // Check file type
-      if (!file.type.match('image.*')) {
-        alert('Please select an image file (JPG, PNG, GIF).');
-        this.value = '';
-        preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>No image selected. Tap to browse.</p>';
-        return;
-      }
-      
-      // Create and display preview
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-  
-  // 2. Update the handlePictureSubmit function
-  function handlePictureSubmit(e) {
-    e.preventDefault();
-    
-    const pictureId = document.getElementById('picture-id').value;
-    const title = document.getElementById('picture-title').value;
-    const description = document.getElementById('picture-description').value;
-    const price = parseFloat(document.getElementById('picture-price').value);
-    const folderId = parseInt(document.getElementById('picture-folder').value);
-    const fileInput = document.getElementById('picture-file');
-    
-    // Check if a new file is being uploaded
-    let imageData = '';
-    if (fileInput && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-      
-      reader.onload = function(e) {
-        imageData = e.target.result; // This is the base64 data URL
-        completePictureSave(pictureId, title, description, price, folderId, imageData);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // For editing existing pictures without changing the image
-      completePictureSave(pictureId, title, description, price, folderId, null);
-    }
-  }
-  
-  // Helper function to complete the picture save process
-  function completePictureSave(pictureId, title, description, price, folderId, imageData) {
-    if (pictureId) {
-      // Edit existing picture
-      const index = pictures.findIndex(p => p.id === parseInt(pictureId));
-      if (index !== -1) {
-        // Update picture count if folder changed
-        const oldFolderId = pictures[index].folderId;
-        if (oldFolderId !== folderId) {
-          updateFolderPictureCount(oldFolderId, -1);
-          updateFolderPictureCount(folderId, 1);
-        }
-        
-        // Update image data if a new file was uploaded
-        if (imageData) {
-          pictures[index].image = imageData;
-        }
-        
-        pictures[index] = {
-          ...pictures[index],
-          title: title,
-          description: description,
-          price: price,
-          folderId: folderId
-        };
-      }
-    } else {
-      // Add new picture
-      const newId = pictures.length > 0 ? Math.max(...pictures.map(p => p.id)) + 1 : 1;
-      pictures.push({
-        id: newId,
-        title: title,
-        description: description,
-        price: price,
-        folderId: folderId,
-        image: imageData || 'placeholder.jpg' // Store the base64 image data
-      });
-      
-      updateFolderPictureCount(folderId, 1);
-    }
-    
-    saveToLocalStorage();
-    loadPicturesTable();
-    updateAdminStats();
-    
-    // Reset form
-    document.getElementById('picture-form').reset();
-    document.getElementById('picture-id').value = '';
-    document.getElementById('image-preview').innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>No image selected. Tap to browse.</p>';
-    
-    alert('Picture saved successfully!');
-  }
-
-
-
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
@@ -144,7 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     
     // Show home page by default
-    showHomePage();
+    if (!window.location.pathname.includes('admin.html')) {
+        showHomePage();
+    }
 });
 
 // Load sample data for first-time users
@@ -185,7 +70,7 @@ function loadSampleData() {
             title: "Mountain Sunrise",
             description: "Beautiful sunrise over snow-capped mountains",
             price: 49.99,
-            image: "mountain.jpg"
+            image: ""
         },
         {
             id: 2,
@@ -193,7 +78,7 @@ function loadSampleData() {
             title: "Forest Path",
             description: "Serene path through an autumn forest",
             price: 39.99,
-            image: "forest.jpg"
+            image: ""
         },
         {
             id: 3,
@@ -201,7 +86,7 @@ function loadSampleData() {
             title: "Ocean Waves",
             description: "Powerful ocean waves crashing on rocks",
             price: 59.99,
-            image: "ocean.jpg"
+            image: ""
         },
         {
             id: 4,
@@ -209,7 +94,7 @@ function loadSampleData() {
             title: "City Skyline",
             description: "Modern city skyline at dusk",
             price: 69.99,
-            image: "city.jpg"
+            image: ""
         },
         {
             id: 5,
@@ -217,7 +102,7 @@ function loadSampleData() {
             title: "Urban Street",
             description: "Vibrant street in an urban neighborhood",
             price: 44.99,
-            image: "street.jpg"
+            image: ""
         },
         {
             id: 6,
@@ -225,7 +110,7 @@ function loadSampleData() {
             title: "Bridge Architecture",
             description: "Architectural details of a historic bridge",
             price: 54.99,
-            image: "bridge.jpg"
+            image: ""
         },
         {
             id: 7,
@@ -233,7 +118,7 @@ function loadSampleData() {
             title: "Portrait of a Woman",
             description: "Elegant portrait with soft lighting",
             price: 79.99,
-            image: "portrait1.jpg"
+            image: ""
         },
         {
             id: 8,
@@ -241,7 +126,7 @@ function loadSampleData() {
             title: "Thoughtful Expression",
             description: "Close-up portrait capturing emotion",
             price: 89.99,
-            image: "portrait2.jpg"
+            image: ""
         },
         {
             id: 9,
@@ -249,7 +134,7 @@ function loadSampleData() {
             title: "Colorful Abstract",
             description: "Vibrant abstract painting with bold colors",
             price: 99.99,
-            image: "abstract1.jpg"
+            image: ""
         },
         {
             id: 10,
@@ -257,7 +142,7 @@ function loadSampleData() {
             title: "Geometric Patterns",
             description: "Abstract art with geometric patterns",
             price: 74.99,
-            image: "abstract2.jpg"
+            image: ""
         }
     ];
     
@@ -307,6 +192,7 @@ function showHomePage() {
     document.getElementById('about-section').style.display = 'none';
     document.getElementById('contact-section').style.display = 'none';
     showFoldersView();
+    renderFolders();
 }
 
 // Show gallery page
@@ -355,7 +241,21 @@ function renderFolders() {
     const foldersContainer = document.getElementById('folders-container');
     if (!foldersContainer) return;
     
+    // Load current data
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
     foldersContainer.innerHTML = '';
+    
+    if (folders.length === 0) {
+        foldersContainer.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
+                <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>No folders yet</h3>
+                <p>Login as admin to create folders and add pictures.</p>
+            </div>
+        `;
+        return;
+    }
     
     folders.forEach(folder => {
         const folderCard = document.createElement('div');
@@ -366,7 +266,7 @@ function renderFolders() {
             </div>
             <div class="folder-info">
                 <h3 class="folder-title">${folder.title}</h3>
-                <p class="folder-count">${folder.pictureCount} pictures</p>
+                <p class="folder-count">${folder.pictureCount || 0} pictures</p>
             </div>
         `;
         
@@ -378,6 +278,7 @@ function renderFolders() {
 // Open folder and show its pictures
 function openFolder(folderId) {
     currentFolderId = folderId;
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
     const folder = folders.find(f => f.id === folderId);
     
     if (!folder) return;
@@ -398,16 +299,28 @@ function renderPictures(folderId) {
     const picturesGrid = document.getElementById('pictures-grid');
     if (!picturesGrid) return;
     
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
     const folderPictures = pictures.filter(p => p.folderId === folderId);
     
     picturesGrid.innerHTML = '';
+    
+    if (folderPictures.length === 0) {
+        picturesGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
+                <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>No pictures in this folder</h3>
+                <p>Login as admin to add pictures to this folder.</p>
+            </div>
+        `;
+        return;
+    }
     
     folderPictures.forEach(picture => {
         const pictureCard = document.createElement('div');
         pictureCard.className = 'picture-card';
         pictureCard.innerHTML = `
             <div class="picture-image">
-                <i class="fas fa-image" style="font-size: 5rem; color: #ccc; display: flex; align-items: center; justify-content: center; height: 100%;"></i>
+                <i class="fas fa-image"></i>
             </div>
             <div class="picture-info">
                 <h3 class="picture-title">${picture.title}</h3>
@@ -442,6 +355,7 @@ function showFoldersView() {
 
 // Open picture modal with details
 function openPictureModal(pictureId) {
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
     const picture = pictures.find(p => p.id === pictureId);
     if (!picture) return;
     
@@ -484,7 +398,7 @@ function handleLogin(e) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     
-    // Simple authentication (in a real app, this would be server-side)
+    // Simple authentication
     if (username === 'admin' && password === 'password123') {
         currentUser = {
             username: username,
@@ -497,6 +411,9 @@ function handleLogin(e) {
         // Close modal
         closeLoginModal();
         
+        // Update button
+        showLogoutButton();
+        
         // Redirect to admin page
         window.location.href = 'admin.html';
     } else {
@@ -508,7 +425,7 @@ function handleLogin(e) {
 function showLoginButton() {
     const loginBtn = document.getElementById('login-btn');
     if (loginBtn) {
-        loginBtn.textContent = 'Admin Login';
+        loginBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin Login';
         loginBtn.onclick = showLoginModal;
     }
 }
@@ -517,20 +434,22 @@ function showLoginButton() {
 function showLogoutButton() {
     const loginBtn = document.getElementById('login-btn');
     if (loginBtn) {
-        loginBtn.textContent = 'Logout';
+        loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
         loginBtn.onclick = logout;
     }
 }
 
 // Logout function
 function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    showLoginButton();
-    
-    // If on admin page, redirect to home
-    if (window.location.pathname.includes('admin.html')) {
-        window.location.href = 'index.html';
+    if (confirm('Are you sure you want to logout?')) {
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        showLoginButton();
+        
+        // If on admin page, redirect to home
+        if (window.location.pathname.includes('admin.html')) {
+            window.location.href = 'index.html';
+        }
     }
 }
 
@@ -540,7 +459,9 @@ function saveToLocalStorage() {
     localStorage.setItem('pictures', JSON.stringify(pictures));
 }
 
-// Admin Dashboard Functions (for admin.html)
+// ============ ADMIN DASHBOARD FUNCTIONS ============
+
+// Show admin dashboard
 function showAdminDashboard() {
     // Only show if user is logged in
     if (!currentUser || !currentUser.isAdmin) {
@@ -573,6 +494,40 @@ function setupAdminEventListeners() {
     document.getElementById('folder-form')?.addEventListener('submit', handleFolderSubmit);
     document.getElementById('picture-form')?.addEventListener('submit', handlePictureSubmit);
     
+    // File upload preview
+    const fileInput = document.getElementById('picture-file');
+    const preview = document.getElementById('image-preview');
+    
+    if (fileInput && preview) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File is too large. Maximum size is 10MB.');
+                    this.value = '';
+                    preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+                    return;
+                }
+                
+                // Validate file type
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPG, PNG, GIF).');
+                    this.value = '';
+                    preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+                    return;
+                }
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
     // Load data for tables
     loadFoldersTable();
     loadPicturesTable();
@@ -595,9 +550,13 @@ function showDashboardSection(sectionId) {
 }
 
 function updateAdminStats() {
+    // Load fresh data
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    
     const totalFolders = folders.length;
     const totalPictures = pictures.length;
-    const totalValue = pictures.reduce((sum, picture) => sum + picture.price, 0);
+    const totalValue = pictures.reduce((sum, picture) => sum + (picture.price || 0), 0);
     
     document.getElementById('total-folders').textContent = totalFolders;
     document.getElementById('total-pictures').textContent = totalPictures;
@@ -605,17 +564,27 @@ function updateAdminStats() {
 }
 
 function loadFoldersTable() {
+    // Load fresh data
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
     const foldersTable = document.getElementById('folders-table');
     if (!foldersTable) return;
     
     foldersTable.innerHTML = '';
     
+    if (folders.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="4" style="text-align: center; padding: 3rem; color: #999;">No folders created yet. Click "Add New Folder" to get started.</td>`;
+        foldersTable.appendChild(row);
+        return;
+    }
+    
     folders.forEach(folder => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${folder.id}</td>
-            <td><i class="${folder.image}"></i> ${folder.title}</td>
-            <td>${folder.pictureCount}</td>
+            <td><i class="${folder.image || 'fas fa-folder'}"></i> ${folder.title}</td>
+            <td>${folder.pictureCount || 0}</td>
             <td>
                 <div class="action-buttons">
                     <button class="btn btn-warning btn-sm edit-folder-btn" data-id="${folder.id}">Edit</button>
@@ -643,10 +612,21 @@ function loadFoldersTable() {
 }
 
 function loadPicturesTable() {
+    // Load fresh data
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
     const picturesTable = document.getElementById('pictures-table');
     if (!picturesTable) return;
     
     picturesTable.innerHTML = '';
+    
+    if (pictures.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="5" style="text-align: center; padding: 3rem; color: #999;">No pictures added yet. Click "Add New Picture" to get started.</td>`;
+        picturesTable.appendChild(row);
+        return;
+    }
     
     pictures.forEach(picture => {
         const folder = folders.find(f => f.id === picture.folderId);
@@ -700,6 +680,7 @@ function showAddPictureForm() {
     document.getElementById('picture-title').value = '';
     document.getElementById('picture-description').value = '';
     document.getElementById('picture-price').value = '';
+    document.getElementById('image-preview').innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
     
     // Load folder options
     const folderSelect = document.getElementById('picture-folder');
@@ -724,6 +705,9 @@ function handleFolderSubmit(e) {
     const title = document.getElementById('folder-title').value;
     const icon = document.getElementById('folder-icon').value;
     
+    // Load current data
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
     if (folderId) {
         // Edit existing folder
         const index = folders.findIndex(f => f.id === parseInt(folderId));
@@ -742,7 +726,10 @@ function handleFolderSubmit(e) {
         });
     }
     
+    // Save to localStorage
     saveToLocalStorage();
+    
+    // Update UI
     loadFoldersTable();
     updateAdminStats();
     
@@ -761,24 +748,58 @@ function handlePictureSubmit(e) {
     const description = document.getElementById('picture-description').value;
     const price = parseFloat(document.getElementById('picture-price').value);
     const folderId = parseInt(document.getElementById('picture-folder').value);
+    const fileInput = document.getElementById('picture-file');
+    
+    // Validate
+    if (!folderId) {
+        alert('Please select a folder for the picture.');
+        return;
+    }
+    
+    // Load current data
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
+    // Handle image upload
+    if (fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const imageData = e.target.result;
+            completePictureSave(pictureId, title, description, price, folderId, imageData);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // For editing without changing image
+        completePictureSave(pictureId, title, description, price, folderId, null);
+    }
+}
+
+function completePictureSave(pictureId, title, description, price, folderId, imageData) {
+    // Load fresh data
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
     
     if (pictureId) {
         // Edit existing picture
         const index = pictures.findIndex(p => p.id === parseInt(pictureId));
         if (index !== -1) {
-            // Update picture count in old folder
+            // Update picture count if folder changed
             const oldFolderId = pictures[index].folderId;
             if (oldFolderId !== folderId) {
                 updateFolderPictureCount(oldFolderId, -1);
                 updateFolderPictureCount(folderId, 1);
             }
             
+            // Update the picture
             pictures[index] = {
                 ...pictures[index],
                 title: title,
                 description: description,
                 price: price,
-                folderId: folderId
+                folderId: folderId,
+                image: imageData || pictures[index].image
             };
         }
     } else {
@@ -790,20 +811,23 @@ function handlePictureSubmit(e) {
             description: description,
             price: price,
             folderId: folderId,
-            image: 'placeholder.jpg'
+            image: imageData || ''
         });
         
-        // Update picture count in folder
         updateFolderPictureCount(folderId, 1);
     }
     
+    // Save to localStorage
     saveToLocalStorage();
+    
+    // Update UI
     loadPicturesTable();
     updateAdminStats();
     
     // Reset form
     document.getElementById('picture-form').reset();
     document.getElementById('picture-id').value = '';
+    document.getElementById('image-preview').innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
     
     alert('Picture saved successfully!');
 }
@@ -811,49 +835,57 @@ function handlePictureSubmit(e) {
 function updateFolderPictureCount(folderId, change) {
     const folderIndex = folders.findIndex(f => f.id === folderId);
     if (folderIndex !== -1) {
-        folders[folderIndex].pictureCount += change;
+        folders[folderIndex].pictureCount = (folders[folderIndex].pictureCount || 0) + change;
         if (folders[folderIndex].pictureCount < 0) {
             folders[folderIndex].pictureCount = 0;
         }
+        
+        // Save updated folders
+        localStorage.setItem('folders', JSON.stringify(folders));
     }
 }
 
 function editFolder(folderId) {
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
     const folder = folders.find(f => f.id === folderId);
-    if (!folder) return;
     
-    document.getElementById('folder-form-title').textContent = 'Edit Folder';
-    document.getElementById('folder-id').value = folder.id;
-    document.getElementById('folder-title').value = folder.title;
-    document.getElementById('folder-icon').value = folder.image;
-    
-    showDashboardSection('folders');
-    document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
+    if (folder) {
+        document.getElementById('folder-form-title').textContent = 'Edit Folder';
+        document.getElementById('folder-id').value = folder.id;
+        document.getElementById('folder-title').value = folder.title;
+        document.getElementById('folder-icon').value = folder.image;
+        
+        showDashboardSection('folders');
+        document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function editPicture(pictureId) {
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
     const picture = pictures.find(p => p.id === pictureId);
-    if (!picture) return;
     
-    document.getElementById('picture-form-title').textContent = 'Edit Picture';
-    document.getElementById('picture-id').value = picture.id;
-    document.getElementById('picture-title').value = picture.title;
-    document.getElementById('picture-description').value = picture.description;
-    document.getElementById('picture-price').value = picture.price;
-    
-    // Load folder options
-    const folderSelect = document.getElementById('picture-folder');
-    folderSelect.innerHTML = '<option value="">Select a folder</option>';
-    folders.forEach(folder => {
-        const option = document.createElement('option');
-        option.value = folder.id;
-        option.textContent = folder.title;
-        option.selected = folder.id === picture.folderId;
-        folderSelect.appendChild(option);
-    });
-    
-    showDashboardSection('pictures');
-    document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
+    if (picture) {
+        document.getElementById('picture-form-title').textContent = 'Edit Picture';
+        document.getElementById('picture-id').value = picture.id;
+        document.getElementById('picture-title').value = picture.title;
+        document.getElementById('picture-description').value = picture.description;
+        document.getElementById('picture-price').value = picture.price;
+        
+        // Load folder options
+        const folderSelect = document.getElementById('picture-folder');
+        folderSelect.innerHTML = '<option value="">Select a folder</option>';
+        folders.forEach(folder => {
+            const option = document.createElement('option');
+            option.value = folder.id;
+            option.textContent = folder.title;
+            option.selected = folder.id === picture.folderId;
+            folderSelect.appendChild(option);
+        });
+        
+        showDashboardSection('pictures');
+        document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function deleteFolder(folderId) {
@@ -861,13 +893,21 @@ function deleteFolder(folderId) {
         return;
     }
     
-    // Delete pictures in this folder first
+    // Load current data
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
+    // Delete pictures in this folder
     pictures = pictures.filter(p => p.folderId !== folderId);
     
     // Delete the folder
     folders = folders.filter(f => f.id !== folderId);
     
-    saveToLocalStorage();
+    // Save to localStorage
+    localStorage.setItem('folders', JSON.stringify(folders));
+    localStorage.setItem('pictures', JSON.stringify(pictures));
+    
+    // Update UI
     loadFoldersTable();
     loadPicturesTable();
     updateAdminStats();
@@ -880,6 +920,10 @@ function deletePicture(pictureId) {
         return;
     }
     
+    // Load current data
+    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    
     // Get picture to update folder count
     const picture = pictures.find(p => p.id === pictureId);
     if (picture) {
@@ -889,7 +933,10 @@ function deletePicture(pictureId) {
     // Delete the picture
     pictures = pictures.filter(p => p.id !== pictureId);
     
-    saveToLocalStorage();
+    // Save to localStorage
+    localStorage.setItem('pictures', JSON.stringify(pictures));
+    
+    // Update UI
     loadPicturesTable();
     updateAdminStats();
     

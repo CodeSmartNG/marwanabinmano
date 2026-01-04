@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
     
-    saveToLocalStorage();
-}
+    
 
 // Set up all event listeners
 function setupEventListeners() {

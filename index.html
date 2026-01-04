@@ -933,7 +933,7 @@
                             <i class="fas fa-phone"></i>
                             <div>
                                 <h4>Phone</h4>
-                                <p>+1 234 567 8900</p>
+                                <p>   +22798167599 </p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -1087,129 +1087,10 @@
             }, 500);
         }
 
-        function loadSampleData() {
-            // Sample folders
-            const sampleFolders = [
-                {
-                    id: 1,
-                    title: "Nature Photography",
-                    image: "fas fa-tree",
-                    pictureCount: 3
-                },
-                {
-                    id: 2,
-                    title: "Urban Landscapes",
-                    image: "fas fa-city",
-                    pictureCount: 3
-                },
-                {
-                    id: 3,
-                    title: "Portrait Art",
-                    image: "fas fa-user",
-                    pictureCount: 2
-                },
-                {
-                    id: 4,
-                    title: "Abstract Art",
-                    image: "fas fa-palette",
-                    pictureCount: 2
-                }
-            ];
+        
             
-            // Sample pictures with sample image data (gradient images)
-            const sampleImages = [
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234361ee'/%3E%3Cstop offset='100%25' stop-color='%233a0ca3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EMountain Sunrise%3C/text%3E%3C/svg%3E",
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2327ae60'/%3E%3Cstop offset='100%25' stop-color='%23219653'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EForest Path%3C/text%3E%3C/svg%3E",
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234cc9f0'/%3E%3Cstop offset='100%25' stop-color='%234895ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EOcean Waves%3C/text%3E%3C/svg%3E",
-                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f72585'/%3E%3Cstop offset='100%25' stop-color='%23b5179e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3ECity Skyline%3C/text%3E%3C/svg%3E"
-            ];
+        
             
-            const samplePictures = [
-                {
-                    id: 1,
-                    folderId: 1,
-                    title: "Mountain Sunrise",
-                    description: "Beautiful sunrise over snow-capped mountains with vibrant orange and pink sky reflections.",
-                    price: 49.99,
-                    image: sampleImages[0]
-                },
-                {
-                    id: 2,
-                    folderId: 1,
-                    title: "Forest Path",
-                    description: "Serene path through an autumn forest with golden leaves covering the ground.",
-                    price: 39.99,
-                    image: sampleImages[1]
-                },
-                {
-                    id: 3,
-                    folderId: 1,
-                    title: "Ocean Waves",
-                    description: "Powerful ocean waves crashing on rocky shore at sunset.",
-                    price: 59.99,
-                    image: sampleImages[2]
-                },
-                {
-                    id: 4,
-                    folderId: 2,
-                    title: "City Skyline",
-                    description: "Modern city skyline at dusk with illuminated buildings against twilight sky.",
-                    price: 69.99,
-                    image: sampleImages[3]
-                },
-                {
-                    id: 5,
-                    folderId: 2,
-                    title: "Urban Street",
-                    description: "Vibrant street in an urban neighborhood with colorful buildings and street art.",
-                    price: 44.99,
-                    image: sampleImages[0]
-                },
-                {
-                    id: 6,
-                    folderId: 2,
-                    title: "Bridge Architecture",
-                    description: "Architectural details of a historic suspension bridge at golden hour.",
-                    price: 54.99,
-                    image: sampleImages[1]
-                },
-                {
-                    id: 7,
-                    folderId: 3,
-                    title: "Portrait of a Woman",
-                    description: "Elegant portrait with soft lighting and thoughtful expression.",
-                    price: 79.99,
-                    image: sampleImages[2]
-                },
-                {
-                    id: 8,
-                    folderId: 3,
-                    title: "Thoughtful Expression",
-                    description: "Close-up portrait capturing deep emotion and character in the eyes.",
-                    price: 89.99,
-                    image: sampleImages[3]
-                },
-                {
-                    id: 9,
-                    folderId: 4,
-                    title: "Colorful Abstract",
-                    description: "Vibrant abstract painting with bold colors and dynamic brush strokes.",
-                    price: 99.99,
-                    image: sampleImages[0]
-                },
-                {
-                    id: 10,
-                    folderId: 4,
-                    title: "Geometric Patterns",
-                    description: "Abstract art with geometric patterns and harmonious color combinations.",
-                    price: 74.99,
-                    image: sampleImages[1]
-                }
-            ];
-            
-            localStorage.setItem('folders', JSON.stringify(sampleFolders));
-            localStorage.setItem('pictures', JSON.stringify(samplePictures));
-        }
 
         function renderFolders(folders) {
             const foldersContainer = document.getElementById('folders-container');
@@ -1502,4 +1383,5 @@
     </script>
 </body>
 </html>
+
 

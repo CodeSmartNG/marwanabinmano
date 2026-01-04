@@ -34,7 +34,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+// Updated loadSampleData function - No sample data
+function loadSampleData() {
+    // Start with just one empty folder
+    folders = [
+        {
+            id: 1,
+            title: "My Pictures",
+            image: "fas fa-folder",
+            pictureCount: 0
+        }
+    ];
+    
+    // Start with empty pictures array
+    pictures = [];
+    
+    saveToLocalStorage();
+}
     
     
     

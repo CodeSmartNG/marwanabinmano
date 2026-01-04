@@ -1,4 +1,4 @@
-// script.js - Complete with working save functionality
+// script.js - Complete with working image display
 
 // Global variables
 let currentUser = null;
@@ -62,7 +62,15 @@ function loadSampleData() {
         }
     ];
     
-    // Sample pictures
+    // Sample pictures with sample image data
+    const sampleImages = [
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234361ee'/%3E%3Cstop offset='100%25' stop-color='%233a0ca3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EMountain Sunrise%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2327ae60'/%3E%3Cstop offset='100%25' stop-color='%23219653'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EForest Path%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234cc9f0'/%3E%3Cstop offset='100%25' stop-color='%234895ef'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EOcean Waves%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f72585'/%3E%3Cstop offset='100%25' stop-color='%23b5179e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3ECity Skyline%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' x2='100%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f39c12'/%3E%3Cstop offset='100%25' stop-color='%23e67e22'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23a)'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EUrban Street%3C/text%3E%3C/svg%3E"
+    ];
+    
     pictures = [
         {
             id: 1,
@@ -70,7 +78,7 @@ function loadSampleData() {
             title: "Mountain Sunrise",
             description: "Beautiful sunrise over snow-capped mountains",
             price: 49.99,
-            image: ""
+            image: sampleImages[0]
         },
         {
             id: 2,
@@ -78,7 +86,7 @@ function loadSampleData() {
             title: "Forest Path",
             description: "Serene path through an autumn forest",
             price: 39.99,
-            image: ""
+            image: sampleImages[1]
         },
         {
             id: 3,
@@ -86,7 +94,7 @@ function loadSampleData() {
             title: "Ocean Waves",
             description: "Powerful ocean waves crashing on rocks",
             price: 59.99,
-            image: ""
+            image: sampleImages[2]
         },
         {
             id: 4,
@@ -94,7 +102,7 @@ function loadSampleData() {
             title: "City Skyline",
             description: "Modern city skyline at dusk",
             price: 69.99,
-            image: ""
+            image: sampleImages[3]
         },
         {
             id: 5,
@@ -102,7 +110,7 @@ function loadSampleData() {
             title: "Urban Street",
             description: "Vibrant street in an urban neighborhood",
             price: 44.99,
-            image: ""
+            image: sampleImages[4]
         },
         {
             id: 6,
@@ -110,7 +118,7 @@ function loadSampleData() {
             title: "Bridge Architecture",
             description: "Architectural details of a historic bridge",
             price: 54.99,
-            image: ""
+            image: sampleImages[0]
         },
         {
             id: 7,
@@ -118,7 +126,7 @@ function loadSampleData() {
             title: "Portrait of a Woman",
             description: "Elegant portrait with soft lighting",
             price: 79.99,
-            image: ""
+            image: sampleImages[1]
         },
         {
             id: 8,
@@ -126,7 +134,7 @@ function loadSampleData() {
             title: "Thoughtful Expression",
             description: "Close-up portrait capturing emotion",
             price: 89.99,
-            image: ""
+            image: sampleImages[2]
         },
         {
             id: 9,
@@ -134,7 +142,7 @@ function loadSampleData() {
             title: "Colorful Abstract",
             description: "Vibrant abstract painting with bold colors",
             price: 99.99,
-            image: ""
+            image: sampleImages[3]
         },
         {
             id: 10,
@@ -142,7 +150,7 @@ function loadSampleData() {
             title: "Geometric Patterns",
             description: "Abstract art with geometric patterns",
             price: 74.99,
-            image: ""
+            image: sampleImages[4]
         }
     ];
     
@@ -318,9 +326,16 @@ function renderPictures(folderId) {
     folderPictures.forEach(picture => {
         const pictureCard = document.createElement('div');
         pictureCard.className = 'picture-card';
+        
+        // Check if picture has actual image data
+        const hasImage = picture.image && picture.image.startsWith('data:image');
+        
         pictureCard.innerHTML = `
             <div class="picture-image">
-                <i class="fas fa-image"></i>
+                ${hasImage ? 
+                    `<img src="${picture.image}" alt="${picture.title}" style="width: 100%; height: 100%; object-fit: cover;">` : 
+                    `<i class="fas fa-image"></i>`
+                }
             </div>
             <div class="picture-info">
                 <h3 class="picture-title">${picture.title}</h3>
@@ -363,6 +378,15 @@ function openPictureModal(pictureId) {
     document.getElementById('modal-picture-title').textContent = picture.title;
     document.getElementById('modal-picture-description').textContent = picture.description;
     document.getElementById('modal-picture-price').textContent = `$${picture.price.toFixed(2)}`;
+    
+    // Update modal image
+    const modalImage = document.getElementById('modal-picture-image');
+    if (picture.image && picture.image.startsWith('data:image')) {
+        modalImage.src = picture.image;
+        modalImage.style.display = 'block';
+    } else {
+        modalImage.style.display = 'none';
+    }
     
     // Set up buy button
     const buyBtn = document.getElementById('buy-btn');
@@ -521,7 +545,7 @@ function setupAdminEventListeners() {
                 // Create preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px;">`;
                 };
                 reader.readAsDataURL(file);
             }
@@ -770,9 +794,13 @@ function handlePictureSubmit(e) {
             completePictureSave(pictureId, title, description, price, folderId, imageData);
         };
         reader.readAsDataURL(file);
+    } else if (pictureId) {
+        // For editing without changing image - keep existing image
+        const existingPicture = pictures.find(p => p.id === parseInt(pictureId));
+        completePictureSave(pictureId, title, description, price, folderId, existingPicture ? existingPicture.image : null);
     } else {
-        // For editing without changing image
-        completePictureSave(pictureId, title, description, price, folderId, null);
+        alert('Please select an image file to upload.');
+        return;
     }
 }
 
@@ -882,6 +910,14 @@ function editPicture(pictureId) {
             option.selected = folder.id === picture.folderId;
             folderSelect.appendChild(option);
         });
+        
+        // Show image preview if exists
+        const preview = document.getElementById('image-preview');
+        if (picture.image && picture.image.startsWith('data:image')) {
+            preview.innerHTML = `<img src="${picture.image}" alt="Preview" style="max-width: 100%; max-height: 200px;">`;
+        } else {
+            preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+        }
         
         showDashboardSection('pictures');
         document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });

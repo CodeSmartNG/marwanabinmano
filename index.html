@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marwana Bin Mano - Picture Album</title>
-    <!-- FIXED: Changed styles.css to style.css -->
+    <title>Marwana Bin Mano - Fashion Boutique</title>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-                        
 </head>
 <body>
     <!-- Header -->
@@ -15,13 +13,13 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-camera-retro"></i>
+                    <i class="fas fa-crown"></i>
                     <h1>Marwana Bin Mano</h1>
                 </div>
                 <nav>
                     <ul>
                         <li><a href="#" id="home-link" class="active">Home</a></li>
-                        <li><a href="#" id="gallery-link">Gallery</a></li>
+                        <li><a href="#" id="gallery-link">Collections</a></li>
                         <li><a href="#" id="about-link">About</a></li>
                         <li><a href="#" id="contact-link">Contact</a></li>
                     </ul>
@@ -41,18 +39,17 @@
             <!-- Hero Section -->
             <section class="hero" id="home-section">
                 <div class="hero-content">
-                    <h2>  Bienvenue dans notre boutique </h2>
-                    <p>  Marwan Bin Mano est une marque de mode dédiée à l’élégance et au style moderne pour hommes et femmes.
-Nous proposons des vêtements soigneusement confectionnés, alliant qualité, confort et design contemporain, pour toutes les occasions. </p>
+                    <h2>Bienvenue dans notre boutique</h2>
+                    <p>Marwana Bin Mano est une marque de mode dédiée à l'élégance et au style moderne pour hommes et femmes. Nous proposons des vêtements soigneusement confectionnés, alliant qualité, confort et design contemporain, pour toutes les occasions.</p>
                     <button class="btn btn-primary" id="explore-btn">
-                        <i class="fas fa-images"></i> Explorez la galerie
+                        <i class="fas fa-images"></i> Explorez nos collections
                     </button>
                 </div>
             </section>
 
             <!-- Gallery Section -->
             <section class="gallery-section" id="gallery-section" style="display: none;">
-                <h2 class="page-title">Picture Folders</h2>
+                <h2 class="page-title">Nos Collections</h2>
                 <div class="folders-container" id="folders-container">
                     <!-- Folders will be loaded here -->
                     <div class="loading" id="folders-loading">
@@ -63,7 +60,7 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
                 <div class="pictures-section" id="pictures-section" style="display: none;">
                     <div class="section-header">
                         <button class="btn btn-secondary" id="back-to-folders">
-                            <i class="fas fa-arrow-left"></i> Back to Folders
+                            <i class="fas fa-arrow-left"></i> Retour aux collections
                         </button>
                         <h3 id="folder-name-display"></h3>
                     </div>
@@ -78,54 +75,69 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
 
             <!-- About Section -->
             <section class="about-section" id="about-section" style="display: none;">
-                <h2 class="page-title">About Marwana Bin Mano</h2>
+                <h2 class="page-title">À Propos de Marwana Bin Mano</h2>
                 <div class="about-content">
                     <div class="about-image">
-                        <i class="fas fa-camera"></i>
+                        <!-- CEO Picture Placeholder -->
+                        <div class="ceo-picture">
+                            <i class="fas fa-user-tie"></i>
+                            <div class="ceo-info">
+                                <h4>Marwana Bin Mano</h4>
+                                <p>Fondateur & PDG</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="about-text">
-                        <p>Welcome to Marwana Bin Mano, your premier destination for high-quality photography and digital art. We specialize in capturing moments that tell stories and evoke emotions.</p>
-                        <p>Our collection features a wide range of photographs from various genres including nature, portraits, urban landscapes, and abstract art. Each piece is carefully selected for its artistic merit and emotional impact.</p>
-                        <p>Every picture in our gallery is available for purchase and can be delivered in high-resolution format suitable for printing or digital use. We work directly with photographers and artists to bring you unique, authentic works.</p>
-                        <p>Whether you're looking for artwork to decorate your space, inspiration for your own creative projects, or a meaningful gift, you'll find something special in our collection.</p>
+                        <p>Marwana Bin Mano est une entreprise de mode innovante fondée avec la vision de redéfinir l'élégance moderne. Notre marque incarne le mélange parfait entre tradition et contemporanéité.</p>
+                        <p>Chaque création est le fruit d'un savoir-faire artisanal et d'une attention méticuleuse aux détails. Nous nous engageons à offrir à nos clients des pièces uniques qui reflètent leur personnalité et leur style.</p>
+                        <p>Notre équipe de designers travaille avec passion pour créer des collections qui célèbrent la diversité et l'individualité. Nous croyons que la mode doit être accessible, inclusive et durable.</p>
+                        <p>Rejoignez-nous dans cette aventure stylistique et découvrez une nouvelle manière de vous exprimer à travers la mode.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Contact Section -->
             <section class="contact-section" id="contact-section" style="display: none;">
-                <h2 class="page-title">Contact Us</h2>
+                <h2 class="page-title">Contactez-nous</h2>
                 <div class="contact-content">
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
                             <div>
-                                <h4>Phone</h4>
-                                <p>   +22798167599 </p>
+                                <h4>Téléphone</h4>
+                                <p>+227 98 16 75 99</p>
                             </div>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
                             <div>
                                 <h4>Email</h4>
-                                <p>info@marwanabinmano.com</p>
+                                <p>contact@marwanabinmano.com</p>
                             </div>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
-                                <h4>Address</h4>
-                                <p>123 Art Street, Creative City</p>
+                                <h4>Adresse</h4>
+                                <p>Niamey, Niger</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Heures d'ouverture</h4>
+                                <p>Lun - Sam: 9:00 - 19:00</p>
+                                <p>Dimanche: 10:00 - 16:00</p>
                             </div>
                         </div>
                     </div>
                     <div class="whatsapp-info">
                         <i class="fab fa-whatsapp"></i>
-                        <h3>Purchase via WhatsApp</h3>
-                        <p>Click on any picture and send us a message on WhatsApp to purchase it. We'll guide you through the simple process.</p>
-                        <p><strong>Our WhatsApp:  +227 98167599 </strong></p>
-                        <button class="btn btn-secondary" style="background: white; color: #25D366; margin-top: 20px;">
-                            <i class="fab fa-whatsapp"></i> Message Us Now
+                        <h3>Commandez via WhatsApp</h3>
+                        <p>Cliquez sur n'importe quel article et envoyez-nous un message WhatsApp pour commander. Nous vous guiderons tout au long du processus.</p>
+                        <p><strong>Notre WhatsApp: +227 98 16 75 99</strong></p>
+                        <button class="btn btn-secondary" style="background: white; color: #25D366; margin-top: 20px;" onclick="window.open('https://wa.me/22798167599', '_blank')">
+                            <i class="fab fa-whatsapp"></i> Envoyez un message
                         </button>
                     </div>
                 </div>
@@ -134,26 +146,66 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
     </main>
 
     <!-- Footer -->
-    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Marwana Bin Mano</h3>
+                    <p>Votre destination de mode élégante et contemporaine. Nous créons des vêtements qui racontent votre histoire.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://wa.me/22798167599"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="#" id="footer-home-link">Accueil</a></li>
+                        <li><a href="#" id="footer-gallery-link">Collections</a></li>
+                        <li><a href="#" id="footer-about-link">À propos</a></li>
+                        <li><a href="#" id="footer-contact-link">Contact</a></li>
+                        <li><a href="admin.html">Espace Admin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +227 98 16 75 99</li>
+                        <li><i class="fas fa-envelope"></i> contact@marwanabinmano.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Niamey, Niger</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Marwana Bin Mano. Tous droits réservés.</p>
+                <p>Conçu avec <i class="fas fa-heart"></i> pour les amateurs de mode</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Picture Modal -->
     <div class="modal" id="picture-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-picture-title">Picture Title</h3>
+                <h3 id="modal-picture-title">Titre de l'article</h3>
                 <button class="close-btn" id="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="modal-image-container">
-                    <img id="modal-picture-image" src="" alt="Picture">
+                    <img id="modal-picture-image" src="" alt="Article">
                 </div>
                 <div class="modal-details">
-                    <p id="modal-picture-description">Picture description goes here.</p>
+                    <p id="modal-picture-description">Description de l'article</p>
                     <div class="modal-price">
-                        <h4>Price: <span id="modal-picture-price">CFA0.00</span></h4>
+                        <h4>Prix: <span id="modal-picture-price">CFA 0</span></h4>
                     </div>
                     <button class="btn btn-success btn-block" id="buy-btn">
-                        <i class="fab fa-whatsapp"></i> Buy via WhatsApp
+                        <i class="fab fa-whatsapp"></i> Commander via WhatsApp
                     </button>
                 </div>
             </div>
@@ -164,24 +216,24 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
     <div class="modal" id="login-modal">
         <div class="modal-content modal-sm">
             <div class="modal-header">
-                <h3>Admin Login</h3>
+                <h3>Connexion Admin</h3>
                 <button class="close-btn" id="close-login-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="login-form">
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" required placeholder="Enter username">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" required placeholder="Entrez votre nom d'utilisateur">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" required placeholder="Enter password">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" required placeholder="Entrez votre mot de passe">
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                        <i class="fas fa-sign-in-alt"></i> Se connecter
                     </button>
                 </form>
-                
+                <p class="login-note">Identifiants: <strong>marwan</strong> / <strong>marwan1217</strong></p>
             </div>
         </div>
     </div>
@@ -189,21 +241,13 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
     <script>
         // JavaScript for Marwana Bin Mano Website
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the website
             initializeWebsite();
         });
 
         function initializeWebsite() {
-            // Check if user is logged in
             checkLoginStatus();
-            
-            // Load data
             loadFolders();
-            
-            // Setup event listeners
             setupEventListeners();
-            
-            // Show home page
             showHomePage();
         }
 
@@ -212,7 +256,7 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             const loginBtn = document.getElementById('login-btn');
             
             if (currentUser) {
-                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
                 loginBtn.onclick = logout;
             } else {
                 loginBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin Login';
@@ -224,62 +268,65 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             const foldersContainer = document.getElementById('folders-container');
             const loadingElement = document.getElementById('folders-loading');
             
-            // Show loading
             if (loadingElement) {
                 loadingElement.style.display = 'flex';
             }
             
-            // Simulate loading delay
             setTimeout(() => {
                 const folders = JSON.parse(localStorage.getItem('folders')) || [];
                 
                 if (folders.length === 0) {
-                    // Load sample data if no folders exist
-                    loadSampleData();
-                    loadFolders(); // Reload after sample data
+                    // No sample data - start with empty state
+                    renderFolders(folders);
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
                     return;
                 }
                 
-                // Render folders
                 renderFolders(folders);
                 
-                // Hide loading
                 if (loadingElement) {
                     loadingElement.style.display = 'none';
                 }
             }, 500);
         }
 
-        
-            
-        
-            
-
         function renderFolders(folders) {
             const foldersContainer = document.getElementById('folders-container');
             
             if (!foldersContainer) return;
             
-            // Clear existing content except loading
             const loadingElement = document.getElementById('folders-loading');
             foldersContainer.innerHTML = '';
+            
             if (loadingElement) {
                 foldersContainer.appendChild(loadingElement);
                 loadingElement.style.display = 'none';
             }
             
-            // Create folder cards
+            if (folders.length === 0) {
+                foldersContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h3>Aucune collection disponible</h3>
+                        <p>Connectez-vous en tant qu'administrateur pour créer des collections et ajouter des articles.</p>
+                    </div>
+                `;
+                return;
+            }
+            
             folders.forEach(folder => {
                 const folderCard = document.createElement('div');
                 folderCard.className = 'folder-card';
                 folderCard.innerHTML = `
                     <div class="folder-image">
-                        <i class="${folder.image}"></i>
+                        <i class="${folder.image || 'fas fa-folder'}"></i>
                     </div>
                     <div class="folder-info">
                         <h3 class="folder-title">${folder.title}</h3>
                         <p class="folder-count">
-                            <i class="fas fa-image"></i> ${folder.pictureCount || 0} pictures
+                            <i class="fas fa-image"></i> ${folder.pictureCount || 0} articles
                         </p>
                     </div>
                 `;
@@ -295,14 +342,10 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             
             if (!folder) return;
             
-            // Update folder name display
             document.getElementById('folder-name-display').textContent = folder.title;
-            
-            // Show pictures section, hide folders
             document.getElementById('folders-container').style.display = 'none';
             document.getElementById('pictures-section').style.display = 'block';
             
-            // Render pictures for this folder
             renderPictures(folderId);
         }
 
@@ -312,38 +355,33 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             
             if (!picturesGrid) return;
             
-            // Show loading
             if (loadingElement) {
                 loadingElement.style.display = 'flex';
                 picturesGrid.innerHTML = '';
                 picturesGrid.appendChild(loadingElement);
             }
             
-            // Simulate loading delay
             setTimeout(() => {
                 const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
                 const folderPictures = pictures.filter(p => p.folderId === folderId);
                 
-                // Clear loading
                 picturesGrid.innerHTML = '';
                 
                 if (folderPictures.length === 0) {
                     picturesGrid.innerHTML = `
                         <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
                             <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                            <h3>No pictures yet</h3>
-                            <p>Check back soon for new additions to this collection.</p>
+                            <h3>Aucun article dans cette collection</h3>
+                            <p>Connectez-vous en tant qu'administrateur pour ajouter des articles à cette collection.</p>
                         </div>
                     `;
                     return;
                 }
                 
-                // Create picture cards
                 folderPictures.forEach(picture => {
                     const pictureCard = document.createElement('div');
                     pictureCard.className = 'picture-card';
                     
-                    // Check if picture has image data
                     const hasImage = picture.image && picture.image.startsWith('data:image');
                     
                     pictureCard.innerHTML = `
@@ -357,9 +395,9 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
                             <h3 class="picture-title">${picture.title}</h3>
                             <p class="picture-description">${picture.description}</p>
                             <div class="picture-footer">
-                                <div class="picture-price">$${picture.price.toFixed(2)}</div>
+                                <div class="picture-price">CFA ${picture.price.toFixed(0)}</div>
                                 <button class="btn btn-primary view-picture-btn" data-id="${picture.id}">
-                                    <i class="fas fa-eye"></i> View
+                                    <i class="fas fa-eye"></i> Voir
                                 </button>
                             </div>
                         </div>
@@ -375,23 +413,16 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             }, 500);
         }
 
-        function getFolderById(folderId) {
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            return folders.find(f => f.id === folderId);
-        }
-
         function openPictureModal(pictureId) {
             const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
             const picture = pictures.find(p => p.id === pictureId);
             
             if (!picture) return;
             
-            // Update modal content
             document.getElementById('modal-picture-title').textContent = picture.title;
             document.getElementById('modal-picture-description').textContent = picture.description;
-            document.getElementById('modal-picture-price').textContent = `$${picture.price.toFixed(2)}`;
+            document.getElementById('modal-picture-price').textContent = `CFA ${picture.price.toFixed(0)}`;
             
-            // Update modal image
             const modalImage = document.getElementById('modal-picture-image');
             if (picture.image && picture.image.startsWith('data:image')) {
                 modalImage.src = picture.image;
@@ -400,15 +431,13 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
                 modalImage.style.display = 'none';
             }
             
-            // Set up buy button
             const buyBtn = document.getElementById('buy-btn');
-            const whatsappMessage = `Hello, I would like to buy "${picture.title}" from Marwana Bin Mano. Price: $${picture.price.toFixed(2)}.`;
+            const whatsappMessage = `Bonjour, je souhaite acheter "${picture.title}" chez Marwana Bin Mano. Prix: CFA ${picture.price.toFixed(0)}.`;
             const encodedMessage = encodeURIComponent(whatsappMessage);
             buyBtn.onclick = () => {
-                window.open(`https://wa.me/12345678900?text=${encodedMessage}`, '_blank');
+                window.open(`https://wa.me/22798167599?text=${encodedMessage}`, '_blank');
             };
             
-            // Show modal
             document.getElementById('picture-modal').style.display = 'flex';
         }
 
@@ -418,6 +447,24 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             document.getElementById('gallery-link').addEventListener('click', showGalleryPage);
             document.getElementById('about-link').addEventListener('click', showAboutPage);
             document.getElementById('contact-link').addEventListener('click', showContactPage);
+            
+            // Footer navigation
+            document.getElementById('footer-home-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showHomePage();
+            });
+            document.getElementById('footer-gallery-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showGalleryPage();
+            });
+            document.getElementById('footer-about-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAboutPage();
+            });
+            document.getElementById('footer-contact-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showContactPage();
+            });
             
             // Buttons
             document.getElementById('explore-btn').addEventListener('click', showGalleryPage);
@@ -483,12 +530,10 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
         }
 
         function setActiveNav(activeId) {
-            // Remove active class from all nav links
             document.querySelectorAll('nav a').forEach(link => {
                 link.classList.remove('active');
             });
             
-            // Add active class to clicked link
             const activeLink = document.getElementById(activeId);
             if (activeLink) {
                 activeLink.classList.add('active');
@@ -513,7 +558,6 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // Simple authentication
             if (username === 'marwan' && password === 'marwan1217') {
                 const currentUser = {
                     username: username,
@@ -525,19 +569,17 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
                 closeLoginModal();
                 checkLoginStatus();
                 
-                // Redirect to admin page
                 window.location.href = 'admin.html';
             } else {
-                alert('Invalid username or password. Try again');
+                alert('Nom d\'utilisateur ou mot de passe incorrect. Essayez marwan / marwan1217');
             }
         }
 
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
                 localStorage.removeItem('currentUser');
                 checkLoginStatus();
                 
-                // If on admin page, redirect to home
                 if (window.location.pathname.includes('admin.html')) {
                     window.location.href = 'index.html';
                 }
@@ -546,12 +588,3 @@ Nous proposons des vêtements soigneusement confectionnés, alliant qualité, co
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

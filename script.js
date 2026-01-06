@@ -1,5 +1,303 @@
 // script.js - Fixed version with proper image saving and CFA currency
 
+
+// Add this at the beginning of your script.js file
+// Check if we're on index.html or admin.html and initialize accordingly
+document.addEventListener('DOMContentLoaded', function() {
+    // Add CSS classes that might be missing
+    addDynamicStyles();
+    
+    // Check if user is already logged in
+    if (localStorage.getItem('currentUser')) {
+        currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (window.location.pathname.includes('admin.html')) {
+            showAdminDashboard();
+        } else {
+            showLoginButton();
+        }
+    } else {
+        showLoginButton();
+    }
+
+    // Load initial data if empty
+    if (folders.length === 0) {
+        loadSampleData();
+    }
+
+    // Set up event listeners
+    setupEventListeners();
+
+    // Show home page by default (only on index.html)
+    if (!window.location.pathname.includes('admin.html')) {
+        showHomePage();
+    }
+});
+
+// Function to add dynamic styles that might be missing
+function addDynamicStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Dynamic styles for the main site */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 2rem;
+        }
+        
+        .folder-card {
+            background: white;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .folder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        }
+        
+        .folder-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.25);
+        }
+        
+        .folder-image i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .folder-card:hover .folder-image i {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .folder-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: #212529;
+        }
+        
+        .folder-count {
+            color: #666;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .pictures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .picture-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(67, 97, 238, 0.15);
+            transition: all 0.4s ease;
+        }
+        
+        .picture-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.25);
+        }
+        
+        .picture-image {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+        
+        .picture-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .picture-card:hover .picture-image img {
+            transform: scale(1.1);
+        }
+        
+        .picture-image i {
+            font-size: 4rem;
+            color: #dee2e6;
+        }
+        
+        .picture-info {
+            padding: 1.5rem;
+        }
+        
+        .picture-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            color: #212529;
+        }
+        
+        .picture-description {
+            color: #666;
+            line-height: 1.5;
+            margin: 0 0 1rem 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .picture-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .picture-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4361ee;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(58, 12, 163, 0.1) 100%);
+            padding: 5rem 0;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #212529;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.6;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+        }
+        
+        .nav-links a:hover:not(.active) {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #4361ee;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #212529;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            border: 2px solid #4361ee;
+        }
+        
+        .btn-secondary:hover {
+            background: #4361ee;
+            color: white;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+
 // Global variables
 let currentUser = null;
 let folders = JSON.parse(localStorage.getItem('folders')) || [];

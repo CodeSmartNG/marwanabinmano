@@ -3,161 +3,588 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marwana Bin Mano - Photography Portfolio</title>
+    <title>Marwana Bin Mano - Fashion Boutique</title>
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+    <header>
         <div class="container">
-            <nav class="nav">
+            <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-camera-retro"></i>
+                    <i class="fas fa-crown"></i>
                     <h1>Marwana Bin Mano</h1>
                 </div>
-                <div class="nav-links">
-                    <a href="#" id="home-link" class="active">Home</a>
-                    <a href="#" id="gallery-link">Gallery</a>
-                    <a href="#" id="about-link">About</a>
-                    <a href="#" id="contact-link">Contact</a>
+                <nav>
+                    <ul>
+                        <li><a href="#" id="home-link" class="active">Home</a></li>
+                        <li><a href="#" id="gallery-link">Collections</a></li>
+                        <li><a href="#" id="about-link">About</a></li>
+                        <li><a href="#" id="contact-link">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-secondary" id="login-btn">
+                        <i class="fas fa-user-shield"></i> Admin Login
+                    </button>
                 </div>
-                <button class="btn btn-primary" id="login-btn">
-                    <i class="fas fa-user-shield"></i> Admin Login
-                </button>
-            </nav>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        <!-- Home Section -->
-        <section id="home-section">
-            <div class="hero">
-                <div class="container">
-                    <h2>Capture the World Through My Lens</h2>
-                    <p>Professional photography with a unique perspective. Explore my collection of stunning images available for purchase.</p>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero" id="home-section">
+                <div class="hero-content">
+                    <h2>Bienvenue dans notre boutique</h2>
+                    <p>Marwana Bin Mano est une marque de mode dédiée à l'élégance et au style moderne pour hommes et femmes. Nous proposons des vêtements soigneusement confectionnés, alliant qualité, confort et design contemporain, pour toutes les occasions.</p>
                     <button class="btn btn-primary" id="explore-btn">
-                        <i class="fas fa-images"></i> Explore Gallery
+                        <i class="fas fa-images"></i> Explorez nos collections
                     </button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Folders Section -->
-            <div class="container" style="margin-top: 3rem;">
-                <h2 class="section-title">Browse Collections</h2>
-                <div id="folders-container" class="folders-grid">
-                    <!-- Folders will be loaded here by JavaScript -->
+            <!-- Gallery Section -->
+            <section class="gallery-section" id="gallery-section" style="display: none;">
+                <h2 class="page-title">Nos Collections</h2>
+                <div class="folders-container" id="folders-container">
+                    <!-- Folders will be loaded here -->
+                    <div class="loading" id="folders-loading">
+                        <div class="loader"></div>
+                    </div>
                 </div>
 
-                <!-- Pictures Section (hidden by default) -->
-                <div id="pictures-section" style="display: none; margin-top: 2rem;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
-                        <h2 id="folder-name-display" style="margin: 0;"></h2>
+                <div class="pictures-section" id="pictures-section" style="display: none;">
+                    <div class="section-header">
                         <button class="btn btn-secondary" id="back-to-folders">
-                            <i class="fas fa-arrow-left"></i> Back to Collections
+                            <i class="fas fa-arrow-left"></i> Retour aux collections
+                        </button>
+                        <h3 id="folder-name-display"></h3>
+                    </div>
+                    <div class="pictures-grid" id="pictures-grid">
+                        <!-- Pictures will be loaded here -->
+                        <div class="loading" id="pictures-loading">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about-section" id="about-section" style="display: none;">
+                <h2 class="page-title">À Propos de Marwana Bin Mano</h2>
+                <div class="about-content">
+                    <div class="about-image">
+                        <!-- CEO Picture Placeholder -->
+                        <div class="ceo-picture">
+                            <i class="fas fa-user-tie"></i>
+                            <div class="ceo-info">
+                                <h4>Marwana Bin Mano</h4>
+                                <p>Fondateur & PDG</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <p>Marwana Bin Mano est une entreprise de mode innovante fondée avec la vision de redéfinir l'élégance moderne. Notre marque incarne le mélange parfait entre tradition et contemporanéité.</p>
+                        <p>Chaque création est le fruit d'un savoir-faire artisanal et d'une attention méticuleuse aux détails. Nous nous engageons à offrir à nos clients des pièces uniques qui reflètent leur personnalité et leur style.</p>
+                        <p>Notre équipe de designers travaille avec passion pour créer des collections qui célèbrent la diversité et l'individualité. Nous croyons que la mode doit être accessible, inclusive et durable.</p>
+                        <p>Rejoignez-nous dans cette aventure stylistique et découvrez une nouvelle manière de vous exprimer à travers la mode.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact-section" id="contact-section" style="display: none;">
+                <h2 class="page-title">Contactez-nous</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Téléphone</h4>
+                                <p>+227 98 16 75 99</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>contact@marwanabinmano.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Adresse</h4>
+                                <p>Niamey, Niger</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Heures d'ouverture</h4>
+                                <p>Lun - Sam: 9:00 - 19:00</p>
+                                <p>Dimanche: 10:00 - 16:00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whatsapp-info">
+                        <i class="fab fa-whatsapp"></i>
+                        <h3>Commandez via WhatsApp</h3>
+                        <p>Cliquez sur n'importe quel article et envoyez-nous un message WhatsApp pour commander. Nous vous guiderons tout au long du processus.</p>
+                        <p><strong>Notre WhatsApp: +227 98 16 75 99</strong></p>
+                        <button class="btn btn-secondary" style="background: white; color: #25D366; margin-top: 20px;" onclick="window.open('https://wa.me/22798167599', '_blank')">
+                            <i class="fab fa-whatsapp"></i> Envoyez un message
                         </button>
                     </div>
-                    <div id="pictures-grid" class="pictures-grid">
-                        <!-- Pictures will be loaded here by JavaScript -->
-                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Gallery Section (hidden by default) -->
-        <section id="gallery-section" style="display: none;">
-            <div class="container">
-                <h2 class="section-title">All Collections</h2>
-                <div id="gallery-folders-container" class="folders-grid">
-                    <!-- Same folders as home section -->
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section (hidden by default) -->
-        <section id="about-section" style="display: none;">
-            <div class="container">
-                <h2 class="section-title">About Marwana Bin Mano</h2>
-                <div class="about-content">
-                    <!-- Add your about content here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section (hidden by default) -->
-        <section id="contact-section" style="display: none;">
-            <div class="container">
-                <h2 class="section-title">Contact Me</h2>
-                <div class="contact-content">
-                    <!-- Add your contact content here -->
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
-    <!-- Picture Modal -->
-    <div id="picture-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-        <div style="background: white; border-radius: 25px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
-            <div style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <h3 id="modal-picture-title" style="margin: 0; font-size: 1.5rem;">Picture Title</h3>
-                <button id="close-modal" style="background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer;">&times;</button>
-            </div>
-            <div style="padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <div>
-                    <img id="modal-picture-image" src="" alt="" style="width: 100%; border-radius: 15px; display: none;">
-                </div>
-                <div>
-                    <p id="modal-picture-description" style="color: #666; line-height: 1.6;"></p>
-                    <div style="margin: 2rem 0;">
-                        <h4 style="color: #333; margin-bottom: 1rem;">Price: <span id="modal-picture-price" style="color: #4361ee; font-weight: bold;"></span></h4>
-                        <button id="buy-btn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                            <i class="fab fa-whatsapp"></i> Buy via WhatsApp
-                        </button>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Marwana Bin Mano</h3>
+                    <p>Votre destination de mode élégante et contemporaine. Nous créons des vêtements qui racontent votre histoire.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://wa.me/22798167599"><i class="fab fa-whatsapp"></i></a>
                     </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="#" id="footer-home-link">Accueil</a></li>
+                        <li><a href="#" id="footer-gallery-link">Collections</a></li>
+                        <li><a href="#" id="footer-about-link">À propos</a></li>
+                        <li><a href="#" id="footer-contact-link">Contact</a></li>
+                        <li><a href="admin.html">Espace Admin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +227 98 16 75 99</li>
+                        <li><i class="fas fa-envelope"></i> contact@marwanabinmano.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Niamey, Niger</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Marwana Bin Mano. Tous droits réservés.</p>
+                <p>Conçu avec <i class="fas fa-heart"></i> pour les amateurs de mode</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Picture Modal -->
+    <div class="modal" id="picture-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-picture-title">Titre de l'article</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modal-picture-image" src="" alt="Article">
+                </div>
+                <div class="modal-details">
+                    <p id="modal-picture-description">Description de l'article</p>
+                    <div class="modal-price">
+                        <h4>Prix: <span id="modal-picture-price">CFA 0</span></h4>
+                    </div>
+                    <button class="btn btn-success btn-block" id="buy-btn">
+                        <i class="fab fa-whatsapp"></i> Commander via WhatsApp
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Login Modal -->
-    <div id="login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-        <div style="background: white; border-radius: 25px; max-width: 400px; width: 100%;">
-            <div style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; font-size: 1.5rem;">Admin Login</h3>
-                <button id="close-login-modal" style="background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer;">&times;</button>
+    <div class="modal" id="login-modal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3>Connexion Admin</h3>
+                <button class="close-btn" id="close-login-modal">&times;</button>
             </div>
-            <div style="padding: 2rem;">
+            <div class="modal-body">
                 <form id="login-form">
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" required placeholder="Enter username">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" required placeholder="Entrez votre nom d'utilisateur">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" required placeholder="Enter password">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" required placeholder="Entrez votre mot de passe">
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); margin-top: 1.5rem; padding: 1rem; font-size: 1.1rem; border-radius: 15px;">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Se connecter
                     </button>
-                    <div style="margin-top: 1rem; text-align: center; color: #666; font-size: 0.9rem;">
-                        <p>Use: <strong>admin</strong> / <strong>password123</strong></p>
-                    </div>
                 </form>
+                <p class="login-note">Identifiants: <strong>marwan</strong> / <strong>marwan1217</strong></p>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer style="background: linear-gradient(135deg, #3a0ca3 0%, #212529 100%); color: white; padding: 3rem 0; margin-top: 4rem; text-align: center;">
-        <div class="container">
-            <p>&copy; 2023 Marwana Bin Mano. All rights reserved.</p>
-            <p style="color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Professional Photography Portfolio</p>
-        </div>
-    </footer>
+    <script>
+        // JavaScript for Marwana Bin Mano Website
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeWebsite();
+        });
 
-    <!-- Link to the JavaScript file -->
-    <script src="script.js"></script>
+        function initializeWebsite() {
+            checkLoginStatus();
+            loadFolders();
+            setupEventListeners();
+            showHomePage();
+        }
+
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('currentUser');
+            const loginBtn = document.getElementById('login-btn');
+            
+            if (currentUser) {
+                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
+                loginBtn.onclick = logout;
+            } else {
+                loginBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin Login';
+                loginBtn.onclick = showLoginModal;
+            }
+        }
+
+        function loadFolders() {
+            const foldersContainer = document.getElementById('folders-container');
+            const loadingElement = document.getElementById('folders-loading');
+            
+            if (loadingElement) {
+                loadingElement.style.display = 'flex';
+            }
+            
+            setTimeout(() => {
+                const folders = JSON.parse(localStorage.getItem('folders')) || [];
+                
+                if (folders.length === 0) {
+                    // No sample data - start with empty state
+                    renderFolders(folders);
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
+                    return;
+                }
+                
+                renderFolders(folders);
+                
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+            }, 500);
+        }
+
+        function renderFolders(folders) {
+            const foldersContainer = document.getElementById('folders-container');
+            
+            if (!foldersContainer) return;
+            
+            const loadingElement = document.getElementById('folders-loading');
+            foldersContainer.innerHTML = '';
+            
+            if (loadingElement) {
+                foldersContainer.appendChild(loadingElement);
+                loadingElement.style.display = 'none';
+            }
+            
+            if (folders.length === 0) {
+                foldersContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h3>Aucune collection disponible</h3>
+                        <p>Connectez-vous en tant qu'administrateur pour créer des collections et ajouter des articles.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            folders.forEach(folder => {
+                const folderCard = document.createElement('div');
+                folderCard.className = 'folder-card';
+                folderCard.innerHTML = `
+                    <div class="folder-image">
+                        <i class="${folder.image || 'fas fa-folder'}"></i>
+                    </div>
+                    <div class="folder-info">
+                        <h3 class="folder-title">${folder.title}</h3>
+                        <p class="folder-count">
+                            <i class="fas fa-image"></i> ${folder.pictureCount || 0} articles
+                        </p>
+                    </div>
+                `;
+                
+                folderCard.addEventListener('click', () => openFolder(folder.id));
+                foldersContainer.appendChild(folderCard);
+            });
+        }
+
+        function openFolder(folderId) {
+            const folders = JSON.parse(localStorage.getItem('folders')) || [];
+            const folder = folders.find(f => f.id === folderId);
+            
+            if (!folder) return;
+            
+            document.getElementById('folder-name-display').textContent = folder.title;
+            document.getElementById('folders-container').style.display = 'none';
+            document.getElementById('pictures-section').style.display = 'block';
+            
+            renderPictures(folderId);
+        }
+
+        function renderPictures(folderId) {
+            const picturesGrid = document.getElementById('pictures-grid');
+            const loadingElement = document.getElementById('pictures-loading');
+            
+            if (!picturesGrid) return;
+            
+            if (loadingElement) {
+                loadingElement.style.display = 'flex';
+                picturesGrid.innerHTML = '';
+                picturesGrid.appendChild(loadingElement);
+            }
+            
+            setTimeout(() => {
+                const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+                const folderPictures = pictures.filter(p => p.folderId === folderId);
+                
+                picturesGrid.innerHTML = '';
+                
+                if (folderPictures.length === 0) {
+                    picturesGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
+                            <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h3>Aucun article dans cette collection</h3>
+                            <p>Connectez-vous en tant qu'administrateur pour ajouter des articles à cette collection.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                folderPictures.forEach(picture => {
+                    const pictureCard = document.createElement('div');
+                    pictureCard.className = 'picture-card';
+                    
+                    const hasImage = picture.image && picture.image.startsWith('data:image');
+                    
+                    pictureCard.innerHTML = `
+                        <div class="picture-image">
+                            ${hasImage ? 
+                                `<img src="${picture.image}" alt="${picture.title}">` : 
+                                `<i class="fas fa-image"></i>`
+                            }
+                        </div>
+                        <div class="picture-info">
+                            <h3 class="picture-title">${picture.title}</h3>
+                            <p class="picture-description">${picture.description}</p>
+                            <div class="picture-footer">
+                                <div class="picture-price">CFA ${picture.price.toFixed(0)}</div>
+                                <button class="btn btn-primary view-picture-btn" data-id="${picture.id}">
+                                    <i class="fas fa-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    pictureCard.querySelector('.view-picture-btn').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        openPictureModal(picture.id);
+                    });
+                    
+                    picturesGrid.appendChild(pictureCard);
+                });
+            }, 500);
+        }
+
+        function openPictureModal(pictureId) {
+            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+            const picture = pictures.find(p => p.id === pictureId);
+            
+            if (!picture) return;
+            
+            document.getElementById('modal-picture-title').textContent = picture.title;
+            document.getElementById('modal-picture-description').textContent = picture.description;
+            document.getElementById('modal-picture-price').textContent = `CFA ${picture.price.toFixed(0)}`;
+            
+            const modalImage = document.getElementById('modal-picture-image');
+            if (picture.image && picture.image.startsWith('data:image')) {
+                modalImage.src = picture.image;
+                modalImage.style.display = 'block';
+            } else {
+                modalImage.style.display = 'none';
+            }
+            
+            const buyBtn = document.getElementById('buy-btn');
+            const whatsappMessage = `Bonjour, je souhaite acheter "${picture.title}" chez Marwana Bin Mano. Prix: CFA ${picture.price.toFixed(0)}.`;
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            buyBtn.onclick = () => {
+                window.open(`https://wa.me/22798167599?text=${encodedMessage}`, '_blank');
+            };
+            
+            document.getElementById('picture-modal').style.display = 'flex';
+        }
+
+        function setupEventListeners() {
+            // Navigation
+            document.getElementById('home-link').addEventListener('click', showHomePage);
+            document.getElementById('gallery-link').addEventListener('click', showGalleryPage);
+            document.getElementById('about-link').addEventListener('click', showAboutPage);
+            document.getElementById('contact-link').addEventListener('click', showContactPage);
+            
+            // Footer navigation
+            document.getElementById('footer-home-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showHomePage();
+            });
+            document.getElementById('footer-gallery-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showGalleryPage();
+            });
+            document.getElementById('footer-about-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAboutPage();
+            });
+            document.getElementById('footer-contact-link')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showContactPage();
+            });
+            
+            // Buttons
+            document.getElementById('explore-btn').addEventListener('click', showGalleryPage);
+            document.getElementById('back-to-folders').addEventListener('click', showFoldersView);
+            
+            // Modals
+            document.getElementById('close-modal').addEventListener('click', closePictureModal);
+            document.getElementById('close-login-modal').addEventListener('click', closeLoginModal);
+            
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            
+            // Close modals on outside click
+            window.addEventListener('click', function(event) {
+                if (event.target === document.getElementById('picture-modal')) {
+                    closePictureModal();
+                }
+                if (event.target === document.getElementById('login-modal')) {
+                    closeLoginModal();
+                }
+            });
+        }
+
+        function showHomePage() {
+            setActiveNav('home-link');
+            hideAllSections();
+            document.getElementById('home-section').style.display = 'block';
+            showFoldersView();
+        }
+
+        function showGalleryPage() {
+            setActiveNav('gallery-link');
+            hideAllSections();
+            document.getElementById('gallery-section').style.display = 'block';
+            showFoldersView();
+        }
+
+        function showAboutPage() {
+            setActiveNav('about-link');
+            hideAllSections();
+            document.getElementById('about-section').style.display = 'block';
+        }
+
+        function showContactPage() {
+            setActiveNav('contact-link');
+            hideAllSections();
+            document.getElementById('contact-section').style.display = 'block';
+        }
+
+        function hideAllSections() {
+            document.getElementById('home-section').style.display = 'none';
+            document.getElementById('gallery-section').style.display = 'none';
+            document.getElementById('about-section').style.display = 'none';
+            document.getElementById('contact-section').style.display = 'none';
+        }
+
+        function showFoldersView() {
+            const foldersContainer = document.getElementById('folders-container');
+            const picturesSection = document.getElementById('pictures-section');
+            
+            if (foldersContainer) foldersContainer.style.display = 'grid';
+            if (picturesSection) picturesSection.style.display = 'none';
+        }
+
+        function setActiveNav(activeId) {
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.getElementById(activeId);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        function showLoginModal() {
+            document.getElementById('login-modal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function closePictureModal() {
+            document.getElementById('picture-modal').style.display = 'none';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'marwan' && password === 'marwan1217') {
+                const currentUser = {
+                    username: username,
+                    isAdmin: true
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                closeLoginModal();
+                checkLoginStatus();
+                
+                window.location.href = 'admin.html';
+            } else {
+                alert('Nom d\'utilisateur ou mot de passe incorrect. Essayez marwan / marwan1217');
+            }
+        }
+
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
+                localStorage.removeItem('currentUser');
+                checkLoginStatus();
+                
+                if (window.location.pathname.includes('admin.html')) {
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

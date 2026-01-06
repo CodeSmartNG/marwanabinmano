@@ -1,9 +1,5 @@
 // script.js - Fixed version with proper image saving and CFA currency
 
-
-
-
-
 // Global variables
 let currentUser = null;
 let folders = JSON.parse(localStorage.getItem('folders')) || [];
@@ -82,7 +78,7 @@ function setupEventListeners() {
     // Modal close buttons
     const closeModalBtn = document.getElementById('close-modal');
     const closeLoginModalBtn = document.getElementById('close-login-modal');
-    
+
     if (closeModalBtn) closeModalBtn.addEventListener('click', closePictureModal);
     if (closeLoginModalBtn) closeLoginModalBtn.addEventListener('click', closeLoginModal);
 
@@ -211,7 +207,7 @@ function openFolder(folderId) {
     // Show pictures section, hide folders
     const foldersContainer = document.getElementById('folders-container');
     const picturesSection = document.getElementById('pictures-section');
-    
+
     if (foldersContainer) foldersContainer.style.display = 'none';
     if (picturesSection) picturesSection.style.display = 'block';
 
@@ -251,7 +247,9 @@ function renderPictures(folderId) {
             <div class="picture-image">
                 ${hasImage ? 
                     `<img src="${picture.image}" alt="${picture.title}" loading="lazy">` : 
-                    `<i class="fas fa-image"></i>`
+                    `<div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                        <i class="fas fa-image" style="font-size: 3rem; color: #ccc;"></i>
+                    </div>`
                 }
             </div>
             <div class="picture-info">
@@ -304,6 +302,8 @@ function openPictureModal(pictureId) {
         if (picture.image && picture.image.startsWith('data:image')) {
             modalImage.src = picture.image;
             modalImage.style.display = 'block';
+            modalImage.style.maxWidth = '100%';
+            modalImage.style.borderRadius = '10px';
         } else {
             modalImage.style.display = 'none';
         }
@@ -425,7 +425,7 @@ function showAdminDashboard() {
         window.location.href = 'index.html';
         return;
     }
-    
+
     try {
         currentUser = JSON.parse(storedUser);
     } catch (e) {
@@ -443,7 +443,7 @@ function showAdminDashboard() {
     updateAdminStats();
     loadFoldersTable();
     loadPicturesTable();
-    
+
     // Show logout button
     showLogoutButton();
 }
@@ -454,43 +454,48 @@ function setupAdminEventListeners() {
     const foldersLink = document.getElementById('folders-link');
     const picturesLink = document.getElementById('pictures-link');
     const logoutBtn = document.getElementById('logout-btn');
-    
+
     if (dashboardLink) dashboardLink.addEventListener('click', (e) => {
         e.preventDefault();
         showDashboardSection('dashboard');
     });
-    
+
     if (foldersLink) foldersLink.addEventListener('click', (e) => {
         e.preventDefault();
         showDashboardSection('folders');
     });
-    
+
     if (picturesLink) picturesLink.addEventListener('click', (e) => {
         e.preventDefault();
         showDashboardSection('pictures');
     });
-    
+
     if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
     // Action buttons
     const addFolderBtn = document.getElementById('add-folder-btn');
     const addPictureBtn = document.getElementById('add-picture-btn');
-    
+
     if (addFolderBtn) addFolderBtn.addEventListener('click', showAddFolderForm);
     if (addPictureBtn) addPictureBtn.addEventListener('click', showAddPictureForm);
 
     // Form submissions
     const folderForm = document.getElementById('folder-form');
     const pictureForm = document.getElementById('picture-form');
-    
+
     if (folderForm) folderForm.addEventListener('submit', handleFolderSubmit);
     if (pictureForm) pictureForm.addEventListener('submit', handlePictureSubmit);
 
-    // File upload preview
+    // File upload preview - FIXED VERSION
     const fileInput = document.getElementById('picture-file');
     const preview = document.getElementById('image-preview');
 
     if (fileInput && preview) {
+        // Make preview area clickable
+        preview.addEventListener('click', function() {
+            fileInput.click();
+        });
+
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -498,26 +503,50 @@ function setupAdminEventListeners() {
                 if (file.size > 10 * 1024 * 1024) {
                     alert('File is too large. Maximum size is 10MB.');
                     this.value = '';
-                    preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+                    resetFilePreview();
                     return;
                 }
 
                 // Validate file type
                 if (!file.type.match('image.*')) {
-                    alert('Please select an image file (JPG, PNG, GIF).');
+                    alert('Please select an image file (JPG, PNG, GIF, WebP).');
                     this.value = '';
-                    preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+                    resetFilePreview();
                     return;
                 }
 
                 // Create preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px;">`;
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px; object-fit: contain;">
+                        <p style="margin-top: 10px; color: #28a745; font-weight: bold;">
+                            <i class="fas fa-check-circle"></i> Ready to upload!
+                        </p>
+                        <p style="font-size: 0.9rem; color: #666;">${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                    `;
+                };
+                reader.onerror = function() {
+                    alert('Error reading file. Please try again.');
+                    resetFilePreview();
                 };
                 reader.readAsDataURL(file);
             }
         });
+    }
+}
+
+function resetFilePreview() {
+    const preview = document.getElementById('image-preview');
+    if (preview) {
+        preview.innerHTML = `
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Tap here or click to select image</p>
+            <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF, WebP</p>
+            <div class="upload-hint">
+                <i class="fas fa-mobile-alt"></i> Select from Phone
+            </div>
+        `;
     }
 }
 
@@ -539,7 +568,7 @@ function showDashboardSection(sectionId) {
     navLinks.forEach(link => {
         link.classList.remove('active');
     });
-    
+
     const activeLink = document.getElementById(`${sectionId}-link`);
     if (activeLink) {
         activeLink.classList.add('active');
@@ -558,7 +587,7 @@ function updateAdminStats() {
     const totalFoldersEl = document.getElementById('total-folders');
     const totalPicturesEl = document.getElementById('total-pictures');
     const totalValueEl = document.getElementById('total-value');
-    
+
     if (totalFoldersEl) totalFoldersEl.textContent = totalFolders;
     if (totalPicturesEl) totalPicturesEl.textContent = totalPictures;
     if (totalValueEl) totalValueEl.textContent = formatCFA(totalValue);
@@ -682,9 +711,8 @@ function showAddPictureForm() {
     document.getElementById('picture-title').value = '';
     document.getElementById('picture-description').value = '';
     document.getElementById('picture-price').value = '5000'; // Default CFA price
-    
-    const preview = document.getElementById('image-preview');
-    if (preview) preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+
+    resetFilePreview();
 
     // Load folder options
     const folderSelect = document.getElementById('picture-folder');
@@ -750,6 +778,7 @@ function handleFolderSubmit(e) {
     alert('Folder saved successfully!');
 }
 
+// FIXED: handlePictureSubmit with proper async handling
 function handlePictureSubmit(e) {
     e.preventDefault();
 
@@ -767,48 +796,84 @@ function handlePictureSubmit(e) {
     }
 
     if (isNaN(price) || price <= 0) {
-        alert('Please enter a valid price greater than 0.');
+        alert('Please enter a valid price greater than 0 CFA.');
         return;
     }
 
-    // Load current data
-    pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-    folders = JSON.parse(localStorage.getItem('folders')) || [];
+    // Check if editing existing picture
+    if (pictureId) {
+        // Editing existing picture
+        pictures = JSON.parse(localStorage.getItem('pictures')) || [];
+        folders = JSON.parse(localStorage.getItem('folders')) || [];
+        
+        const existingPicture = pictures.find(p => p.id === parseInt(pictureId));
+        if (!existingPicture) {
+            alert('Picture not found!');
+            return;
+        }
 
-    // Handle image upload
-    if (fileInput && fileInput.files.length > 0) {
+        if (fileInput && fileInput.files.length > 0) {
+            // New image selected
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+                savePictureToStorage(pictureId, title, description, price, folderId, imageData, true);
+            };
+            reader.onerror = function() {
+                alert('Error reading image file. Please try again.');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // No new image, keep existing
+            savePictureToStorage(pictureId, title, description, price, folderId, existingPicture.image, true);
+        }
+    } else {
+        // Adding new picture - require image
+        if (!fileInput || fileInput.files.length === 0) {
+            alert('Please select an image file to upload.');
+            return;
+        }
+
         const file = fileInput.files[0];
         const reader = new FileReader();
 
         reader.onload = function(e) {
             const imageData = e.target.result;
-            completePictureSave(pictureId, title, description, price, folderId, imageData);
+            savePictureToStorage(null, title, description, price, folderId, imageData, false);
+        };
+        reader.onerror = function() {
+            alert('Error reading image file. Please try again.');
         };
         reader.readAsDataURL(file);
-    } else if (pictureId) {
-        // For editing without changing image - keep existing image
-        const existingPicture = pictures.find(p => p.id === parseInt(pictureId));
-        completePictureSave(pictureId, title, description, price, folderId, existingPicture ? existingPicture.image : null);
-    } else {
-        alert('Please select an image file to upload.');
-        return;
     }
 }
 
-function completePictureSave(pictureId, title, description, price, folderId, imageData) {
+// FIXED: Unified function to save picture to storage
+function savePictureToStorage(pictureId, title, description, price, folderId, imageData, isEditing) {
     // Load fresh data
     pictures = JSON.parse(localStorage.getItem('pictures')) || [];
     folders = JSON.parse(localStorage.getItem('folders')) || [];
 
-    if (pictureId) {
+    if (isEditing && pictureId) {
         // Edit existing picture
         const index = pictures.findIndex(p => p.id === parseInt(pictureId));
         if (index !== -1) {
             // Update picture count if folder changed
             const oldFolderId = pictures[index].folderId;
             if (oldFolderId !== folderId) {
-                updateFolderPictureCount(oldFolderId, -1);
-                updateFolderPictureCount(folderId, 1);
+                // Decrease count in old folder
+                const oldFolderIndex = folders.findIndex(f => f.id === oldFolderId);
+                if (oldFolderIndex !== -1) {
+                    folders[oldFolderIndex].pictureCount = Math.max((folders[oldFolderIndex].pictureCount || 0) - 1, 0);
+                }
+                
+                // Increase count in new folder
+                const newFolderIndex = folders.findIndex(f => f.id === folderId);
+                if (newFolderIndex !== -1) {
+                    folders[newFolderIndex].pictureCount = (folders[newFolderIndex].pictureCount || 0) + 1;
+                }
             }
 
             // Update the picture
@@ -833,28 +898,37 @@ function completePictureSave(pictureId, title, description, price, folderId, ima
             image: imageData || ''
         });
 
-        updateFolderPictureCount(folderId, 1);
+        // Increase count in folder
+        const folderIndex = folders.findIndex(f => f.id === folderId);
+        if (folderIndex !== -1) {
+            folders[folderIndex].pictureCount = (folders[folderIndex].pictureCount || 0) + 1;
+        }
     }
 
     // Save to localStorage
-    saveToLocalStorage();
+    localStorage.setItem('pictures', JSON.stringify(pictures));
+    localStorage.setItem('folders', JSON.stringify(folders));
 
     // Update UI
     loadPicturesTable();
     updateAdminStats();
 
     // Reset form
-    const pictureForm = document.getElementById('picture-form');
-    if (pictureForm) {
-        pictureForm.reset();
-        document.getElementById('picture-id').value = '';
-        document.getElementById('picture-price').value = '5000'; // Reset to default CFA
-    }
-    
-    const preview = document.getElementById('image-preview');
-    if (preview) preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+    document.getElementById('picture-form').reset();
+    document.getElementById('picture-id').value = '';
+    document.getElementById('picture-price').value = '5000';
+    resetFilePreview();
+    document.getElementById('picture-form-title').textContent = 'Add New Picture';
 
     alert('Picture saved successfully!');
+
+    // Reload main page if we're on index.html
+    if (!window.location.pathname.includes('admin.html')) {
+        if (currentFolderId) {
+            renderPictures(currentFolderId);
+        }
+        renderFolders();
+    }
 }
 
 function updateFolderPictureCount(folderId, change) {
@@ -915,9 +989,9 @@ function editPicture(pictureId) {
         const preview = document.getElementById('image-preview');
         if (preview) {
             if (picture.image && picture.image.startsWith('data:image')) {
-                preview.innerHTML = `<img src="${picture.image}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px;">`;
+                preview.innerHTML = `<img src="${picture.image}" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px; object-fit: contain;">`;
             } else {
-                preview.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><p>Tap here or click to select image</p>';
+                resetFilePreview();
             }
         }
 

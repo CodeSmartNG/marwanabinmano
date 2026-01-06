@@ -101,6 +101,11 @@ function setupEventListeners() {
     });
 }
 
+
+
+
+
+
 // Show home page
 function showHomePage() {
     setActiveNav('home-link');
@@ -108,6 +113,11 @@ function showHomePage() {
     document.getElementById('gallery-section').style.display = 'none';
     document.getElementById('about-section').style.display = 'none';
     document.getElementById('contact-section').style.display = 'none';
+    
+    // Show footer on home page
+    const footer = document.getElementById('main-footer');
+    if (footer) footer.style.display = 'block';
+    
     showFoldersView();
     renderFolders();
 }
@@ -119,6 +129,11 @@ function showGalleryPage() {
     document.getElementById('gallery-section').style.display = 'block';
     document.getElementById('about-section').style.display = 'none';
     document.getElementById('contact-section').style.display = 'none';
+    
+    // Hide footer on gallery page
+    const footer = document.getElementById('main-footer');
+    if (footer) footer.style.display = 'none';
+    
     renderFolders();
 }
 
@@ -129,6 +144,10 @@ function showAboutPage() {
     document.getElementById('gallery-section').style.display = 'none';
     document.getElementById('about-section').style.display = 'block';
     document.getElementById('contact-section').style.display = 'none';
+    
+    // Hide footer on about page
+    const footer = document.getElementById('main-footer');
+    if (footer) footer.style.display = 'none';
 }
 
 // Show contact page
@@ -138,7 +157,23 @@ function showContactPage() {
     document.getElementById('gallery-section').style.display = 'none';
     document.getElementById('about-section').style.display = 'none';
     document.getElementById('contact-section').style.display = 'block';
+    
+    // Hide footer on contact page
+    const footer = document.getElementById('main-footer');
+    if (footer) footer.style.display = 'none';
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Set active navigation link
 function setActiveNav(activeId) {

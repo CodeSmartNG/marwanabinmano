@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marwana Bin Mano - Fashion Boutique</title>
     <link rel="stylesheet" href="index.css">
-<link rel="script" href="script.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="home-page">
     <!-- Header -->
     <header>
         <div class="container">
@@ -52,31 +51,28 @@
             <section class="gallery-section" id="gallery-section" style="display: none;">
                 <h2 class="page-title">Nos Collections</h2>
                 <div class="folders-container" id="folders-container">
-                    <!-- Folders will be loaded here -->
+                    <!-- Folders will be loaded here by JavaScript -->
                     <div class="loading" id="folders-loading">
                         <div class="loader"></div>
+                        <p>Loading collections...</p>
                     </div>
                 </div>
 
-                <!--sample album-->
-
-
-<div class="pictures-section" id="pictures-section" style="display: none;">
+                <div class="pictures-section" id="pictures-section" style="display: none;">
                     <div class="section-header">
                         <button class="btn btn-secondary" id="back-to-folders">
                             <i class="fas fa-arrow-left"></i> Retour aux collections
                         </button>
-                        <h3 id="folder-name-display"></h3>
+                        <h3 id="folder-name-display">Collection</h3>
                     </div>
                     <div class="pictures-grid" id="pictures-grid">
-                        <!-- Pictures will be loaded here -->
+                        <!-- Pictures will be loaded here by JavaScript -->
                         <div class="loading" id="pictures-loading">
                             <div class="loader"></div>
+                            <p>Loading pictures...</p>
                         </div>
                     </div>
                 </div>
-
-
             </section>
 
             <!-- About Section -->
@@ -84,7 +80,6 @@
                 <h2 class="page-title">À Propos de Marwana Bin Mano</h2>
                 <div class="about-content">
                     <div class="about-image">
-                        <!-- CEO Picture Placeholder -->
                         <div class="ceo-picture">
                             <i class="fas fa-user-tie"></i>
                             <div class="ceo-info">
@@ -142,7 +137,7 @@
                         <h3>Commandez via WhatsApp</h3>
                         <p>Cliquez sur n'importe quel article et envoyez-nous un message WhatsApp pour commander. Nous vous guiderons tout au long du processus.</p>
                         <p><strong>Notre WhatsApp: +227 98 16 75 99</strong></p>
-                        <button class="btn btn-secondary" style="background: white; color: #25D366; margin-top: 20px;" onclick="window.open('https://wa.me/22798167599', '_blank')">
+                        <button class="btn btn-whatsapp" onclick="window.open('https://wa.me/22798167599', '_blank')">
                             <i class="fab fa-whatsapp"></i> Envoyez un message
                         </button>
                     </div>
@@ -152,12 +147,40 @@
     </main>
 
     <!-- Footer -->
-    
-
-
-
-
-
+    <footer id="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Marwana Bin Mano</h3>
+                <p>Votre boutique de mode élégante et contemporaine. Nous proposons des vêtements de qualité pour hommes et femmes.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="https://wa.me/22798167599"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <ul>
+                    <li><a href="#" id="footer-home-link"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#" id="footer-gallery-link"><i class="fas fa-images"></i> Collections</a></li>
+                    <li><a href="#" id="footer-about-link"><i class="fas fa-info-circle"></i> À Propos</a></li>
+                    <li><a href="#" id="footer-contact-link"><i class="fas fa-phone"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +227 98 16 75 99</p>
+                <p><i class="fas fa-envelope"></i> contact@marwanabinmano.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Niamey, Niger</p>
+                <p><i class="fas fa-clock"></i> Lun-Sam: 9h-19h</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Marwana Bin Mano. Tous droits réservés.</p>
+            <p>Conçu avec <i class="fas fa-heart"></i> pour la mode africaine</p>
+        </div>
+    </footer>
 
     <!-- Picture Modal -->
     <div class="modal" id="picture-modal">
@@ -204,361 +227,71 @@
                         <i class="fas fa-sign-in-alt"></i> Se connecter
                     </button>
                 </form>
-                <p class="login-note">Identifiants: <strong>marwan</strong> / <strong>marwan1217</strong></p>
+                <div class="login-note">
+                    <p><strong>Identifiants par défaut:</strong></p>
+                    <p>Nom d'utilisateur: <strong>admin</strong></p>
+                    <p>Mot de passe: <strong>password123</strong></p>
+                </div>
             </div>
         </div>
     </div>
 
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
     <script>
-        // JavaScript for Marwana Bin Mano Website
+        // Additional initialization for index.html
         document.addEventListener('DOMContentLoaded', function() {
-            initializeWebsite();
-        });
-
-        function initializeWebsite() {
-            checkLoginStatus();
-            loadFolders();
-            setupEventListeners();
-            showHomePage();
-        }
-
-        function checkLoginStatus() {
-            const currentUser = localStorage.getItem('currentUser');
-            const loginBtn = document.getElementById('login-btn');
+            // Add class to body for home page footer visibility
+            document.body.classList.add('home-page');
             
-            if (currentUser) {
-                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-                loginBtn.onclick = logout;
-            } else {
-                loginBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin Login';
-                loginBtn.onclick = showLoginModal;
-            }
-        }
-
-        function loadFolders() {
-            const foldersContainer = document.getElementById('folders-container');
-            const loadingElement = document.getElementById('folders-loading');
+            // Update footer links to match main navigation
+            const footerHomeLink = document.getElementById('footer-home-link');
+            const footerGalleryLink = document.getElementById('footer-gallery-link');
+            const footerAboutLink = document.getElementById('footer-about-link');
+            const footerContactLink = document.getElementById('footer-contact-link');
             
-            if (loadingElement) {
-                loadingElement.style.display = 'flex';
-            }
-            
-            setTimeout(() => {
-                const folders = JSON.parse(localStorage.getItem('folders')) || [];
-                
-                if (folders.length === 0) {
-                    // No sample data - start with empty state
-                    renderFolders(folders);
-                    if (loadingElement) {
-                        loadingElement.style.display = 'none';
+            if (footerHomeLink) {
+                footerHomeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof showHomePage === 'function') {
+                        showHomePage();
                     }
-                    return;
-                }
-                
-                renderFolders(folders);
-                
-                if (loadingElement) {
-                    loadingElement.style.display = 'none';
-                }
-            }, 500);
-        }
-
-        function renderFolders(folders) {
-            const foldersContainer = document.getElementById('folders-container');
-            
-            if (!foldersContainer) return;
-            
-            const loadingElement = document.getElementById('folders-loading');
-            foldersContainer.innerHTML = '';
-            
-            if (loadingElement) {
-                foldersContainer.appendChild(loadingElement);
-                loadingElement.style.display = 'none';
-            }
-            
-            if (folders.length === 0) {
-                foldersContainer.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
-                        <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <h3>Aucune collection disponible</h3>
-                        <p>Connectez-vous en tant qu'administrateur pour créer des collections et ajouter des articles.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            folders.forEach(folder => {
-                const folderCard = document.createElement('div');
-                folderCard.className = 'folder-card';
-                folderCard.innerHTML = `
-                    <div class="folder-image">
-                        <i class="${folder.image || 'fas fa-folder'}"></i>
-                    </div>
-                    <div class="folder-info">
-                        <h3 class="folder-title">${folder.title}</h3>
-                        <p class="folder-count">
-                            <i class="fas fa-image"></i> ${folder.pictureCount || 0} articles
-                        </p>
-                    </div>
-                `;
-                
-                folderCard.addEventListener('click', () => openFolder(folder.id));
-                foldersContainer.appendChild(folderCard);
-            });
-        }
-
-        function openFolder(folderId) {
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            const folder = folders.find(f => f.id === folderId);
-            
-            if (!folder) return;
-            
-            document.getElementById('folder-name-display').textContent = folder.title;
-            document.getElementById('folders-container').style.display = 'none';
-            document.getElementById('pictures-section').style.display = 'block';
-            
-            renderPictures(folderId);
-        }
-
-        function renderPictures(folderId) {
-            const picturesGrid = document.getElementById('pictures-grid');
-            const loadingElement = document.getElementById('pictures-loading');
-            
-            if (!picturesGrid) return;
-            
-            if (loadingElement) {
-                loadingElement.style.display = 'flex';
-                picturesGrid.innerHTML = '';
-                picturesGrid.appendChild(loadingElement);
-            }
-            
-            setTimeout(() => {
-                const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-                const folderPictures = pictures.filter(p => p.folderId === folderId);
-                
-                picturesGrid.innerHTML = '';
-                
-                if (folderPictures.length === 0) {
-                    picturesGrid.innerHTML = `
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #666;">
-                            <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                            <h3>Aucun article dans cette collection</h3>
-                            <p>Connectez-vous en tant qu'administrateur pour ajouter des articles à cette collection.</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                folderPictures.forEach(picture => {
-                    const pictureCard = document.createElement('div');
-                    pictureCard.className = 'picture-card';
-                    
-                    const hasImage = picture.image && picture.image.startsWith('data:image');
-                    
-                    pictureCard.innerHTML = `
-                        <div class="picture-image">
-                            ${hasImage ? 
-                                `<img src="${picture.image}" alt="${picture.title}">` : 
-                                `<i class="fas fa-image"></i>`
-                            }
-                        </div>
-                        <div class="picture-info">
-                            <h3 class="picture-title">${picture.title}</h3>
-                            <p class="picture-description">${picture.description}</p>
-                            <div class="picture-footer">
-                                <div class="picture-price">CFA ${picture.price.toFixed(0)}</div>
-                                <button class="btn btn-primary view-picture-btn" data-id="${picture.id}">
-                                    <i class="fas fa-eye"></i> Voir
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    pictureCard.querySelector('.view-picture-btn').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        openPictureModal(picture.id);
-                    });
-                    
-                    picturesGrid.appendChild(pictureCard);
                 });
-            }, 500);
-        }
-
-        function openPictureModal(pictureId) {
-            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-            const picture = pictures.find(p => p.id === pictureId);
-            
-            if (!picture) return;
-            
-            document.getElementById('modal-picture-title').textContent = picture.title;
-            document.getElementById('modal-picture-description').textContent = picture.description;
-            document.getElementById('modal-picture-price').textContent = `CFA ${picture.price.toFixed(0)}`;
-            
-            const modalImage = document.getElementById('modal-picture-image');
-            if (picture.image && picture.image.startsWith('data:image')) {
-                modalImage.src = picture.image;
-                modalImage.style.display = 'block';
-            } else {
-                modalImage.style.display = 'none';
             }
             
-            const buyBtn = document.getElementById('buy-btn');
-            const whatsappMessage = `Bonjour, je souhaite acheter "${picture.title}" chez Marwana Bin Mano. Prix: CFA ${picture.price.toFixed(0)}.`;
-            const encodedMessage = encodeURIComponent(whatsappMessage);
-            buyBtn.onclick = () => {
-                window.open(`https://wa.me/22798167599?text=${encodedMessage}`, '_blank');
-            };
-            
-            document.getElementById('picture-modal').style.display = 'flex';
-        }
-
-        function setupEventListeners() {
-            // Navigation
-            document.getElementById('home-link').addEventListener('click', showHomePage);
-            document.getElementById('gallery-link').addEventListener('click', showGalleryPage);
-            document.getElementById('about-link').addEventListener('click', showAboutPage);
-            document.getElementById('contact-link').addEventListener('click', showContactPage);
-            
-            // Footer navigation
-            document.getElementById('footer-home-link')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                showHomePage();
-            });
-            document.getElementById('footer-gallery-link')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                showGalleryPage();
-            });
-            document.getElementById('footer-about-link')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                showAboutPage();
-            });
-            document.getElementById('footer-contact-link')?.addEventListener('click', (e) => {
-                e.preventDefault();
-                showContactPage();
-            });
-            
-            // Buttons
-            document.getElementById('explore-btn').addEventListener('click', showGalleryPage);
-            document.getElementById('back-to-folders').addEventListener('click', showFoldersView);
-            
-            // Modals
-            document.getElementById('close-modal').addEventListener('click', closePictureModal);
-            document.getElementById('close-login-modal').addEventListener('click', closeLoginModal);
-            
-            // Login form
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
-            
-            // Close modals on outside click
-            window.addEventListener('click', function(event) {
-                if (event.target === document.getElementById('picture-modal')) {
-                    closePictureModal();
-                }
-                if (event.target === document.getElementById('login-modal')) {
-                    closeLoginModal();
-                }
-            });
-        }
-
-        function showHomePage() {
-            setActiveNav('home-link');
-            hideAllSections();
-            document.getElementById('home-section').style.display = 'block';
-            showFoldersView();
-        }
-
-        function showGalleryPage() {
-            setActiveNav('gallery-link');
-            hideAllSections();
-            document.getElementById('gallery-section').style.display = 'block';
-            showFoldersView();
-        }
-
-        function showAboutPage() {
-            setActiveNav('about-link');
-            hideAllSections();
-            document.getElementById('about-section').style.display = 'block';
-        }
-
-        function showContactPage() {
-            setActiveNav('contact-link');
-            hideAllSections();
-            document.getElementById('contact-section').style.display = 'block';
-        }
-
-        function hideAllSections() {
-            document.getElementById('home-section').style.display = 'none';
-            document.getElementById('gallery-section').style.display = 'none';
-            document.getElementById('about-section').style.display = 'none';
-            document.getElementById('contact-section').style.display = 'none';
-        }
-
-        function showFoldersView() {
-            const foldersContainer = document.getElementById('folders-container');
-            const picturesSection = document.getElementById('pictures-section');
-            
-            if (foldersContainer) foldersContainer.style.display = 'grid';
-            if (picturesSection) picturesSection.style.display = 'none';
-        }
-
-        function setActiveNav(activeId) {
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            const activeLink = document.getElementById(activeId);
-            if (activeLink) {
-                activeLink.classList.add('active');
+            if (footerGalleryLink) {
+                footerGalleryLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof showGalleryPage === 'function') {
+                        showGalleryPage();
+                    }
+                });
             }
-        }
-
-        function showLoginModal() {
-            document.getElementById('login-modal').style.display = 'flex';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('login-modal').style.display = 'none';
-        }
-
-        function closePictureModal() {
-            document.getElementById('picture-modal').style.display = 'none';
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
             
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            if (footerAboutLink) {
+                footerAboutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof showAboutPage === 'function') {
+                        showAboutPage();
+                    }
+                });
+            }
             
-            if (username === 'marwan' && password === 'marwan1217') {
-                const currentUser = {
-                    username: username,
-                    isAdmin: true
-                };
-                
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                
-                closeLoginModal();
-                checkLoginStatus();
-                
-                window.location.href = 'admin.html';
-            } else {
-                alert('Nom d\'utilisateur ou mot de passe incorrect. Essayez marwan / marwan1217');
+            if (footerContactLink) {
+                footerContactLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof showContactPage === 'function') {
+                        showContactPage();
+                    }
+                });
             }
-        }
-
-        function logout() {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter?')) {
-                localStorage.removeItem('currentUser');
-                checkLoginStatus();
-                
-                if (window.location.pathname.includes('admin.html')) {
-                    window.location.href = 'index.html';
-                }
+            
+            // Set current year in footer
+            const yearSpan = document.querySelector('.footer-bottom p:first-child');
+            if (yearSpan) {
+                const currentYear = new Date().getFullYear();
+                yearSpan.textContent = yearSpan.textContent.replace('2024', currentYear);
             }
-        }
+        });
     </script>
 </body>
 </html>

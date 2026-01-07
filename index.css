@@ -667,6 +667,60 @@ nav a.active::after {
 }
 
 /* ====== FOOTER STYLES ====== */
+/* ====== FOOTER VISIBILITY FIX ====== */
+/* Default: Show footer */
+footer {
+    display: block;
+}
+
+/* Hide footer on non-home pages */
+body.gallery-page footer,
+body.about-page footer,
+body.contact-page footer {
+    display: none !important;
+}
+
+/* Ensure main content adjusts when footer is hidden */
+body.gallery-page main,
+body.about-page main,
+body.contact-page main {
+    min-height: calc(100vh - 150px);
+}
+
+/* Fix for body class management */
+body.home-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Ensure proper page display */
+#home-section,
+#gallery-section,
+#about-section,
+#contact-section {
+    display: none;
+}
+
+#home-section.active,
+#gallery-section.active,
+#about-section.active,
+#contact-section.active {
+    display: block;
+}
+
+/* Fix for page switching */
+.gallery-section,
+.about-section,
+.contact-section {
+    display: none;
+}
+
+.gallery-section.active,
+.about-section.active,
+.contact-section.active {
+    display: block;
+}
 footer {
     background: var(--gradient-swing);
     color: white;

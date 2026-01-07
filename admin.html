@@ -6,27 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Marwana Bin Mano</title>
     <link rel="stylesheet" href="admin.css">
-<link rel="script" href="script.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
 </head>
 <body>
     <!-- Admin Header -->
     <header class="admin-header">
         <div class="container">
-            <div class="admin-nav" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="admin-nav">
                 <div class="logo">
                     <i class="fas fa-camera-retro"></i>
-                    <h1 style="color: white;">Marwana Bin Mano - Admin</h1>
+                    <h1>Marwana Bin Mano - Admin</h1>
                 </div>
-                <nav style="display: flex; gap: 10px;">
-                    <a href="#" id="dashboard-link" class="active">Dashboard</a>
-                    <a href="#" id="folders-link">Folders</a>
-                    <a href="#" id="pictures-link">Pictures</a>
+                <nav>
+                    <a href="#" id="dashboard-link" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="#" id="folders-link"><i class="fas fa-folder"></i> Folders</a>
+                    <a href="#" id="pictures-link"><i class="fas fa-image"></i> Pictures</a>
                 </nav>
                 <div class="auth-buttons">
-                    <button class="btn btn-secondary" id="logout-btn" style="background: rgba(255,255,255,0.2); border-color: white;">Logout</button>
-                    <a href="index.html" class="btn btn-primary" style="background: white; color: var(--primary-swing);">View Site</a>
+                    <button class="btn btn-secondary" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-eye"></i> View Site
+                    </a>
                 </div>
             </div>
         </div>
@@ -40,7 +42,7 @@
                 <h2 class="page-title">Admin Dashboard</h2>
                 
                 <!-- Stats -->
-                <div class="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 2rem 0 3rem;">
+                <div class="stats-container">
                     <div class="stat-card">
                         <i class="fas fa-folder"></i>
                         <h3 id="total-folders">0</h3>
@@ -57,30 +59,34 @@
                         <p>Total Value</p>
                     </div>
                     <div class="stat-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>Upload</h3>
-                        <p>Phone Files Ready</p>
+                        <i class="fas fa-upload"></i>
+                        <h3>Ready</h3>
+                        <p>Mobile Upload</p>
                     </div>
                 </div>
                 
                 <!-- Quick Actions -->
-                <div class="admin-actions" style="display: flex; gap: 15px; margin-bottom: 2rem; flex-wrap: wrap;">
-                    <button class="btn btn-primary" id="add-folder-btn" style="background: var(--gradient-swing);">
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="add-folder-btn">
                         <i class="fas fa-plus"></i> Add New Folder
                     </button>
-                    <button class="btn btn-success" id="add-picture-btn" style="background: var(--gradient-accent);">
+                    <button class="btn btn-success" id="add-picture-btn">
                         <i class="fas fa-plus"></i> Add New Picture
                     </button>
-                    <button class="btn btn-warning" onclick="showUploadGuide()" style="background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);">
+                    <button class="btn btn-warning" id="upload-guide-btn">
                         <i class="fas fa-question-circle"></i> Upload Guide
+                    </button>
+                    <button class="btn btn-secondary" id="reset-sample-btn">
+                        <i class="fas fa-redo"></i> Reset Sample Data
                     </button>
                 </div>
                 
                 <!-- Recent Activity -->
                 <div class="table-container">
-                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                        Recent Pictures
-                    </h3>
+                    <div class="table-header">
+                        <h3>Recent Pictures</h3>
+                        <span class="badge" id="recent-count">0 recent</span>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -91,128 +97,161 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="pictures-table">
-                            <!-- Pictures will be loaded here by JavaScript -->
-                            <tr id="no-pictures-msg"><td colspan="5" style="text-align: center; padding: 3rem; color: #999;">No pictures added yet. Click "Add New Picture" to get started.</td></tr>
+                        <tbody id="recent-pictures-table">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 3rem; color: #999;">
+                                    No recent pictures. Add some pictures to see them here.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <!-- Folders Management Section -->
-            <section class="dashboard-section" id="folders-section" style="display: none;">
+            <section class="dashboard-section" id="folders-section">
                 <h2 class="page-title">Manage Folders</h2>
                 
                 <!-- Add/Edit Folder Form -->
-                <div class="table-container" style="margin-bottom: 2rem;">
-                    <div class="modal-header" style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0;">
-                        <h3 id="folder-form-title" style="margin: 0; font-size: 1.5rem;">Add New Folder</h3>
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3 id="folder-form-title">Add New Folder</h3>
+                        <p>Create folders to organize your pictures</p>
                     </div>
-                    <div class="modal-body" style="padding: 2rem;">
+                    <div class="form-body">
                         <form id="folder-form">
                             <input type="hidden" id="folder-id" value="">
                             <div class="form-group">
-                                <label for="folder-title">Folder Title</label>
+                                <label for="folder-title">Folder Title *</label>
                                 <input type="text" id="folder-title" required placeholder="Enter folder name">
                             </div>
                             <div class="form-group">
-                                <label for="folder-icon">Folder Icon (FontAwesome class)</label>
-                                <input type="text" id="folder-icon" value="fas fa-folder" required placeholder="fas fa-folder">
-                                <small style="color: #666; display: block; margin-top: 0.5rem;">Examples: fas fa-folder, fas fa-image, fas fa-city, fas fa-tree, fas fa-mountain</small>
+                                <label for="folder-icon">Folder Icon (FontAwesome class) *</label>
+                                <div class="icon-input">
+                                    <input type="text" id="folder-icon" value="fas fa-folder" required placeholder="fas fa-folder">
+                                    <div class="icon-preview">
+                                        <i id="icon-preview" class="fas fa-folder"></i>
+                                    </div>
+                                </div>
+                                <small class="form-hint">
+                                    Examples: fas fa-folder, fas fa-image, fas fa-city, fas fa-tree, fas fa-mountain
+                                </small>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="background: var(--gradient-swing); margin-top: 1.5rem; padding: 1rem; font-size: 1.1rem; border-radius: 15px;">
-                                <i class="fas fa-save"></i> Save Folder
-                            </button>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-save"></i> Save Folder
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="cancel-folder-edit" style="display: none;">
+                                    Cancel Edit
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
                 
                 <!-- Folders Table -->
                 <div class="table-container">
-                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                        All Folders
-                    </h3>
+                    <div class="table-header">
+                        <h3>All Folders</h3>
+                        <span class="badge" id="folders-count">0 folders</span>
+                    </div>
                     <table>
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Folder</th>
                                 <th>Pictures</th>
+                                <th>Created</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="folders-table">
-                            <!-- Folders will be loaded here by JavaScript -->
-                            <tr id="no-folders-msg"><td colspan="4" style="text-align: center; padding: 3rem; color: #999;">No folders created yet. Click "Add New Folder" to get started.</td></tr>
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 3rem; color: #999;">
+                                    No folders created yet. Create your first folder above.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <!-- Pictures Management Section -->
-            <section class="dashboard-section" id="pictures-section" style="display: none;">
+            <section class="dashboard-section" id="pictures-section">
                 <h2 class="page-title">Manage Pictures</h2>
                 
                 <!-- Add/Edit Picture Form -->
-                <div class="table-container" style="margin-bottom: 2rem;">
-                    <div class="modal-header" style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0;">
-                        <h3 id="picture-form-title" style="margin: 0; font-size: 1.5rem;">Add New Picture</h3>
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3 id="picture-form-title">Add New Picture</h3>
+                        <p>Upload images directly from your phone or computer</p>
                     </div>
-                    <div class="modal-body" style="padding: 2rem;">
+                    <div class="form-body">
                         <form id="picture-form">
                             <input type="hidden" id="picture-id" value="">
                             <div class="form-group">
-                                <label for="picture-title">Picture Title</label>
+                                <label for="picture-title">Picture Title *</label>
                                 <input type="text" id="picture-title" required placeholder="Enter picture title">
                             </div>
                             <div class="form-group">
-                                <label for="picture-description">Description</label>
+                                <label for="picture-description">Description *</label>
                                 <textarea id="picture-description" rows="3" required placeholder="Describe this picture"></textarea>
                             </div>
                             
-                            <!-- NEW: File Upload Section -->
+                            <!-- File Upload Section -->
                             <div class="form-group">
-                                <label for="picture-file">Upload Image from Phone</label>
+                                <label for="picture-file">Upload Image *</label>
                                 <div class="file-upload-container">
                                     <input type="file" id="picture-file" accept="image/*" required>
                                     <div class="file-preview" id="image-preview">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        <p>Tap here or click to select image</p>
-                                        <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <div class="upload-text">
+                                            <p>Click or tap to select image</p>
+                                            <small>Supports JPG, PNG, GIF, WebP (Max 10MB)</small>
+                                        </div>
                                         <div class="upload-hint">
-                                            <i class="fas fa-mobile-alt"></i> Select from Phone
+                                            <i class="fas fa-mobile-alt"></i> Works great on mobile!
                                         </div>
                                     </div>
                                 </div>
-                                <small style="color: #666; display: block; margin-top: 0.5rem;">Maximum file size: 10MB. Recommended: High-quality photos for best results.</small>
                             </div>
                             
-                            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 1.5rem 0;">
+                            <div class="form-row">
                                 <div class="form-group">
-                                    <label for="picture-price">Price (CFA)</label>
-                                    <input type="number" id="picture-price" min="0" step="100" required placeholder="0" value="5000">
-                                    <small style="color: #666; display: block; margin-top: 0.5rem;">Price in West African CFA Francs (₣)</small>
+                                    <label for="picture-price">Price (CFA) *</label>
+                                    <div class="price-input">
+                                        <input type="number" id="picture-price" min="0" step="100" required value="5000">
+                                        <span class="currency">CFA</span>
+                                    </div>
+                                    <small class="form-hint">Price in West African CFA Francs</small>
                                 </div>
                                 <div class="form-group">
-                                    <label for="picture-folder">Folder</label>
+                                    <label for="picture-folder">Folder *</label>
                                     <select id="picture-folder" required>
                                         <option value="">Select a folder</option>
-                                        <!-- Options will be loaded dynamically -->
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="background: var(--gradient-swing); margin-top: 1rem; padding: 1rem; font-size: 1.1rem; border-radius: 15px;">
-                                <i class="fas fa-save"></i> Save Picture
-                            </button>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fas fa-save"></i> Save Picture
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="cancel-picture-edit" style="display: none;">
+                                    Cancel Edit
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
                 
                 <!-- Pictures Table -->
                 <div class="table-container">
-                    <h3 style="padding: 1.5rem; margin: 0; color: var(--dark-swing); font-size: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                        All Pictures
-                    </h3>
+                    <div class="table-header">
+                        <h3>All Pictures</h3>
+                        <span class="badge" id="pictures-count">0 pictures</span>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -220,12 +259,16 @@
                                 <th>Title</th>
                                 <th>Folder</th>
                                 <th>Price</th>
+                                <th>Image</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="pictures-table-2">
-                            <!-- Pictures will be loaded here by JavaScript -->
-                            <tr id="no-pictures-msg-2"><td colspan="5" style="text-align: center; padding: 3rem; color: #999;">No pictures added yet. Upload your first picture above.</td></tr>
+                        <tbody id="pictures-table">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 3rem; color: #999;">
+                                    No pictures added yet. Upload your first picture above.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -234,584 +277,249 @@
     </main>
 
     <!-- Footer -->
-<br/>
-    <footer style="background: var(--dark-swing); color: white; padding: 2rem 0; margin-top: 3rem; text-align: center;">
+    <footer class="admin-footer">
         <div class="container">
-            <p>&copy; 2023 Marwana Bin Mano. Admin Panel</p>
-            <p style="color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Upload pictures directly from your phone with our mobile-friendly interface</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Marwana Bin Mano</h3>
+                    <p>Admin Panel v1.0</p>
+                    <p>Upload pictures directly from your phone</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Stats</h3>
+                    <p><i class="fas fa-folder"></i> Folders: <span id="footer-folders">0</span></p>
+                    <p><i class="fas fa-image"></i> Pictures: <span id="footer-pictures">0</span></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <p>For help, contact:</p>
+                    <p><i class="fas fa-envelope"></i> admin@marwanabinmano.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Marwana Bin Mano. All rights reserved.</p>
+                <p class="version">Version: 1.0.0 | Last Updated: <span id="current-date"></span></p>
+            </div>
         </div>
     </footer>
 
     <!-- Upload Guide Modal -->
-    <div id="upload-guide-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-        <div style="background: white; border-radius: 25px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;">
-            <div style="background: var(--gradient-swing); color: white; padding: 1.5rem; border-radius: 25px 25px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; font-size: 1.5rem;">Mobile Upload Guide</h3>
-                <button onclick="closeUploadGuide()" style="background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer;">&times;</button>
+    <div id="upload-guide-modal" class="modal">
+        <div class="modal-content modal-md">
+            <div class="modal-header">
+                <h3><i class="fas fa-mobile-alt"></i> Mobile Upload Guide</h3>
+                <button class="close-btn" id="close-upload-guide">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div style="padding: 2rem;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
-                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
-                    <div>
-                        <h4 style="margin: 0 0 0.3rem 0;">Tap the Upload Area</h4>
-                        <p style="color: #666; margin: 0;">Click the blue upload box or "Select from Phone" button</p>
+            <div class="modal-body">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Tap the Upload Area</h4>
+                        <p>Click the blue upload box or "Select from Phone" button</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
-                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
-                    <div>
-                        <h4 style="margin: 0 0 0.3rem 0;">Choose Image Source</h4>
-                        <p style="color: #666; margin: 0;">Select "Camera" to take a new photo or "Gallery" to choose existing</p>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Choose Image Source</h4>
+                        <p>Select "Camera" to take a new photo or "Gallery" to choose existing</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
-                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
-                    <div>
-                        <h4 style="margin: 0 0 0.3rem 0;">Preview & Complete Form</h4>
-                        <p style="color: #666; margin: 0;">Add title, description, price in CFA and select folder</p>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Preview & Complete Form</h4>
+                        <p>Add title, description, price in CFA and select folder</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 2rem;">
-                    <div style="background: var(--gradient-swing); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">4</div>
-                    <div>
-                        <h4 style="margin: 0 0 0.3rem 0;">Save Picture</h4>
-                        <p style="color: #666; margin: 0;">Click "Save Picture" to add to your gallery</p>
+                <div class="guide-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Save Picture</h4>
+                        <p>Click "Save Picture" to add to your gallery</p>
                     </div>
                 </div>
-                <button onclick="closeUploadGuide()" style="background: var(--gradient-swing); color: white; border: none; padding: 1rem 2rem; border-radius: 15px; font-weight: 600; width: 100%; cursor: pointer;">
-                    Got it, let's upload!
+                <div class="guide-tips">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tips:</h4>
+                    <ul>
+                        <li>Use high-quality images for best results</li>
+                        <li>Add descriptive titles and detailed descriptions</li>
+                        <li>Organize pictures into appropriate folders</li>
+                        <li>Set competitive prices in CFA</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary btn-block" id="got-it-btn">
+                    <i class="fas fa-check-circle"></i> Got it, let's upload!
                 </button>
             </div>
         </div>
     </div>
 
-
-
-
-<script src="script.js"></script>
-
-
-
-    <script>
-        // Simple JavaScript for admin panel interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Navigation
-            document.getElementById('dashboard-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showSection('dashboard-section');
-                setActiveNav(this);
-            });
-            
-            document.getElementById('folders-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showSection('folders-section');
-                setActiveNav(this);
-            });
-            
-            document.getElementById('pictures-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showSection('pictures-section');
-                setActiveNav(this);
-            });
-            
-            // Buttons
-            document.getElementById('add-folder-btn').addEventListener('click', function() {
-                showSection('folders-section');
-                setActiveNav(document.getElementById('folders-link'));
-                document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            document.getElementById('add-picture-btn').addEventListener('click', function() {
-                showSection('pictures-section');
-                setActiveNav(document.getElementById('pictures-link'));
-                document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // File upload preview
-            const fileInput = document.getElementById('picture-file');
-            const preview = document.getElementById('image-preview');
-            
-            if (fileInput && preview) {
-                fileInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        // Validate file size (10MB limit)
-                        if (file.size > 10 * 1024 * 1024) {
-                            alert('File is too large. Maximum size is 10MB.');
-                            this.value = '';
-                            preview.innerHTML = `
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Tap here or click to select image</p>
-                                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
-                                <div class="upload-hint">
-                                    <i class="fas fa-mobile-alt"></i> Select from Phone
-                                </div>
-                            `;
-                            return;
-                        }
-                        
-                        // Validate file type
-                        if (!file.type.match('image.*')) {
-                            alert('Please select an image file (JPG, PNG, GIF).');
-                            this.value = '';
-                            preview.innerHTML = `
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Tap here or click to select image</p>
-                                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
-                                <div class="upload-hint">
-                                    <i class="fas fa-mobile-alt"></i> Select from Phone
-                                </div>
-                            `;
-                            return;
-                        }
-                        
-                        // Create preview
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            preview.innerHTML = `
-                                <img src="${e.target.result}" alt="Preview">
-                                <p style="margin-top: 1rem; color: var(--success-swing); font-weight: 600;">
-                                    <i class="fas fa-check-circle"></i> Ready to upload!
-                                </p>
-                                <p style="font-size: 0.9rem;">${file.name}</p>
-                            `;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                // Make the whole preview area clickable
-                preview.addEventListener('click', function() {
-                    fileInput.click();
-                });
-            }
-            
-            // Logout
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                if (confirm('Are you sure you want to logout?')) {
-                    localStorage.removeItem('currentUser');
-                    window.location.href = 'index.html';
-                }
-            });
-            
-            // Check if user is logged in
-            if (!localStorage.getItem('currentUser')) {
-                window.location.href = 'index.html';
-            }
-            
-            // Load initial data
-            updateAdminStats();
-            loadFoldersTable();
-            loadPicturesTable();
-        });
-        
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.dashboard-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId).style.display = 'block';
-        }
-        
-        function setActiveNav(activeLink) {
-            // Remove active class from all nav links
-            document.querySelectorAll('.admin-nav a').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // Add active class to clicked link
-            activeLink.classList.add('active');
-        }
-        
-        // Function to format CFA currency
-        function formatCFA(amount) {
-            return new Intl.NumberFormat('fr-FR', {
-                style: 'currency',
-                currency: 'XOF',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(amount).replace('XOF', 'CFA');
-        }
-        
-        function updateAdminStats() {
-            // This would typically load from your data storage
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-            
-            const totalValue = pictures.reduce((sum, pic) => sum + (parseFloat(pic.price) || 0), 0);
-            
-            document.getElementById('total-folders').textContent = folders.length;
-            document.getElementById('total-pictures').textContent = pictures.length;
-            document.getElementById('total-value').textContent = formatCFA(totalValue);
-        }
-        
-        function loadFoldersTable() {
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            const tableBody = document.getElementById('folders-table');
-            const noFoldersMsg = document.getElementById('no-folders-msg');
-            
-            if (folders.length === 0) {
-                if (noFoldersMsg) noFoldersMsg.style.display = 'table-row';
-                return;
-            }
-            
-            if (noFoldersMsg) noFoldersMsg.style.display = 'none';
-            tableBody.innerHTML = '';
-            
-            folders.forEach(folder => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${folder.id || 'N/A'}</td>
-                    <td><i class="${folder.image || 'fas fa-folder'}"></i> ${folder.title || 'Untitled'}</td>
-                    <td>${folder.pictureCount || 0}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn btn-warning btn-sm" onclick="editFolder(${folder.id})">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteFolder(${folder.id})">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function loadPicturesTable() {
-            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            const tableBody = document.getElementById('pictures-table');
-            const tableBody2 = document.getElementById('pictures-table-2');
-            const noPicturesMsg = document.getElementById('no-pictures-msg');
-            const noPicturesMsg2 = document.getElementById('no-pictures-msg-2');
-            
-            if (pictures.length === 0) {
-                if (noPicturesMsg) noPicturesMsg.style.display = 'table-row';
-                if (noPicturesMsg2) noPicturesMsg2.style.display = 'table-row';
-                return;
-            }
-            
-            if (noPicturesMsg) noPicturesMsg.style.display = 'none';
-            if (noPicturesMsg2) noPicturesMsg2.style.display = 'none';
-            
-            // Load for dashboard table
-            if (tableBody) {
-                tableBody.innerHTML = '';
-                // Show only recent 5 pictures
-                const recentPictures = pictures.slice(-5).reverse();
-                
-                recentPictures.forEach(pic => {
-                    const folder = folders.find(f => f.id === pic.folderId);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${pic.id || 'N/A'}</td>
-                        <td>${pic.title || 'Untitled'}</td>
-                        <td>${folder ? folder.title : 'Uncategorized'}</td>
-                        <td>${formatCFA(parseFloat(pic.price || 0))}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-warning btn-sm" onclick="editPicture(${pic.id})">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm" onclick="deletePicture(${pic.id})">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-            
-            // Load for pictures management table
-            if (tableBody2) {
-                tableBody2.innerHTML = '';
-                pictures.forEach(pic => {
-                    const folder = folders.find(f => f.id === pic.folderId);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${pic.id || 'N/A'}</td>
-                        <td>${pic.title || 'Untitled'}</td>
-                        <td>${folder ? folder.title : 'Uncategorized'}</td>
-                        <td>${formatCFA(parseFloat(pic.price || 0))}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-warning btn-sm" onclick="editPicture(${pic.id})">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm" onclick="deletePicture(${pic.id})">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tableBody2.appendChild(row);
-                });
-            }
-            
-            // Update folder dropdown in picture form
-            const folderSelect = document.getElementById('picture-folder');
-            if (folderSelect) {
-                folderSelect.innerHTML = '<option value="">Select a folder</option>';
-                folders.forEach(folder => {
-                    const option = document.createElement('option');
-                    option.value = folder.id;
-                    option.textContent = folder.title;
-                    folderSelect.appendChild(option);
-                });
-            }
-        }
-        
-        function editFolder(folderId) {
-            const folders = JSON.parse(localStorage.getItem('folders')) || [];
-            const folder = folders.find(f => f.id === folderId);
-            
-            if (folder) {
-                document.getElementById('folder-id').value = folder.id;
-                document.getElementById('folder-title').value = folder.title;
-                document.getElementById('folder-icon').value = folder.image;
-                document.getElementById('folder-form-title').textContent = 'Edit Folder';
-                
-                showSection('folders-section');
-                setActiveNav(document.getElementById('folders-link'));
-                document.getElementById('folder-form').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-        
-        function editPicture(pictureId) {
-            const pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-            const picture = pictures.find(p => p.id === pictureId);
-            
-            if (picture) {
-                document.getElementById('picture-id').value = picture.id;
-                document.getElementById('picture-title').value = picture.title;
-                document.getElementById('picture-description').value = picture.description;
-                document.getElementById('picture-price').value = picture.price;
-                document.getElementById('picture-form-title').textContent = 'Edit Picture';
-                
-                // Set folder selection
-                const folderSelect = document.getElementById('picture-folder');
-                if (folderSelect) {
-                    folderSelect.value = picture.folderId;
-                }
-                
-                // Update preview
-                const preview = document.getElementById('image-preview');
-                if (preview && picture.image && picture.image.startsWith('data:image')) {
-                    preview.innerHTML = `
-                        <img src="${picture.image}" alt="Preview">
-                        <p style="margin-top: 1rem; color: var(--success-swing); font-weight: 600;">
-                            <i class="fas fa-check-circle"></i> Current Image
-                        </p>
-                    `;
-                }
-                
-                showSection('pictures-section');
-                setActiveNav(document.getElementById('pictures-link'));
-                document.getElementById('picture-form').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-        
-        function deleteFolder(folderId) {
-            if (confirm('Are you sure you want to delete this folder? All pictures in this folder will also be deleted.')) {
-                let folders = JSON.parse(localStorage.getItem('folders')) || [];
-                let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-                
-                // Delete pictures in this folder
-                pictures = pictures.filter(p => p.folderId !== folderId);
-                
-                // Delete the folder
-                folders = folders.filter(f => f.id !== folderId);
-                
-                localStorage.setItem('folders', JSON.stringify(folders));
-                localStorage.setItem('pictures', JSON.stringify(pictures));
-                
-                loadFoldersTable();
-                loadPicturesTable();
-                updateAdminStats();
-                
-                alert('Folder deleted successfully!');
-            }
-        }
-        
-        function deletePicture(pictureId) {
-            if (confirm('Are you sure you want to delete this picture?')) {
-                let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-                pictures = pictures.filter(p => p.id !== pictureId);
-                
-                localStorage.setItem('pictures', JSON.stringify(pictures));
-                
-                loadPicturesTable();
-                updateAdminStats();
-                
-                alert('Picture deleted successfully!');
-            }
-        }
-        
-        // Form submissions
-        document.getElementById('folder-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const folderId = document.getElementById('folder-id').value;
-            const title = document.getElementById('folder-title').value;
-            const icon = document.getElementById('folder-icon').value;
-            
-            let folders = JSON.parse(localStorage.getItem('folders')) || [];
-            
-            if (folderId) {
-                // Edit existing folder
-                const index = folders.findIndex(f => f.id === parseInt(folderId));
-                if (index !== -1) {
-                    folders[index] = {
-                        ...folders[index],
-                        title: title,
-                        image: icon
-                    };
-                }
-            } else {
-                // Add new folder
-                const newId = folders.length > 0 ? Math.max(...folders.map(f => f.id)) + 1 : 1;
-                folders.push({
-                    id: newId,
-                    title: title,
-                    image: icon,
-                    pictureCount: 0
-                });
-            }
-            
-            localStorage.setItem('folders', JSON.stringify(folders));
-            
-            loadFoldersTable();
-            updateAdminStats();
-            
-            // Reset form
-            this.reset();
-            document.getElementById('folder-id').value = '';
-            document.getElementById('folder-form-title').textContent = 'Add New Folder';
-            
-            alert('Folder saved successfully!');
-        });
-        
-        document.getElementById('picture-form')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const pictureId = document.getElementById('picture-id').value;
-            const title = document.getElementById('picture-title').value;
-            const description = document.getElementById('picture-description').value;
-            const price = parseFloat(document.getElementById('picture-price').value);
-            const folderId = parseInt(document.getElementById('picture-folder').value);
-            const fileInput = document.getElementById('picture-file');
-            
-            if (!folderId) {
-                alert('Please select a folder for the picture.');
-                return;
-            }
-            
-            if (isNaN(price) || price < 0) {
-                alert('Please enter a valid price in CFA.');
-                return;
-            }
-            
-            let pictures = JSON.parse(localStorage.getItem('pictures')) || [];
-            let folders = JSON.parse(localStorage.getItem('folders')) || [];
-            
-            // Handle image data
-            let imageData = '';
-            if (fileInput && fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    imageData = e.target.result;
-                    completePictureSave(pictureId, title, description, price, folderId, imageData, pictures, folders);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // For editing without changing image
-                completePictureSave(pictureId, title, description, price, folderId, null, pictures, folders);
-            }
-        });
-        
-        function completePictureSave(pictureId, title, description, price, folderId, imageData, pictures, folders) {
-            if (pictureId) {
-                // Edit existing picture
-                const index = pictures.findIndex(p => p.id === parseInt(pictureId));
-                if (index !== -1) {
-                    // Update folder picture counts if folder changed
-                    const oldFolderId = pictures[index].folderId;
-                    if (oldFolderId !== folderId) {
-                        updateFolderCount(oldFolderId, -1, folders);
-                        updateFolderCount(folderId, 1, folders);
-                    }
-                    
-                    // Update the picture
-                    pictures[index] = {
-                        ...pictures[index],
-                        title: title,
-                        description: description,
-                        price: price,
-                        folderId: folderId,
-                        image: imageData || pictures[index].image
-                    };
-                }
-            } else {
-                // Add new picture
-                const newId = pictures.length > 0 ? Math.max(...pictures.map(p => p.id)) + 1 : 1;
-                pictures.push({
-                    id: newId,
-                    title: title,
-                    description: description,
-                    price: price,
-                    folderId: folderId,
-                    image: imageData || ''
-                });
-                
-                updateFolderCount(folderId, 1, folders);
-            }
-            
-            localStorage.setItem('pictures', JSON.stringify(pictures));
-            localStorage.setItem('folders', JSON.stringify(folders));
-            
-            loadPicturesTable();
-            updateAdminStats();
-            
-            // Reset form
-            document.getElementById('picture-form').reset();
-            document.getElementById('picture-id').value = '';
-            document.getElementById('image-preview').innerHTML = `
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>Tap here or click to select image</p>
-                <p style="font-size: 0.9rem; color: #888;">Supports JPG, PNG, GIF</p>
-                <div class="upload-hint">
-                    <i class="fas fa-mobile-alt"></i> Select from Phone
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h3>
+            </div>
+            <div class="modal-body">
+                <p id="delete-message">Are you sure you want to delete this item?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="cancel-delete">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button class="btn btn-danger" id="confirm-delete">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
                 </div>
-            `;
-            document.getElementById('picture-form-title').textContent = 'Add New Picture';
-            document.getElementById('picture-price').value = "5000";
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize current date in footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
             
-            alert('Picture saved successfully!');
-        }
-        
-        function updateFolderCount(folderId, change, folders) {
-            const folderIndex = folders.findIndex(f => f.id === folderId);
-            if (folderIndex !== -1) {
-                folders[folderIndex].pictureCount = (folders[folderIndex].pictureCount || 0) + change;
-                if (folders[folderIndex].pictureCount < 0) {
-                    folders[folderIndex].pictureCount = 0;
+            // Make sure admin dashboard loads
+            if (window.location.pathname.includes('admin.html')) {
+                // Check if user is logged in
+                const currentUser = localStorage.getItem('currentUser');
+                if (!currentUser) {
+                    window.location.href = 'index.html';
+                } else {
+                    // Show admin dashboard
+                    if (typeof showAdminDashboard === 'function') {
+                        showAdminDashboard();
+                    }
                 }
             }
-        }
+            
+            // Add event listeners for cancel buttons
+            document.getElementById('cancel-folder-edit')?.addEventListener('click', function() {
+                document.getElementById('folder-form').reset();
+                document.getElementById('folder-id').value = '';
+                document.getElementById('folder-form-title').textContent = 'Add New Folder';
+                this.style.display = 'none';
+                document.getElementById('icon-preview').className = 'fas fa-folder';
+            });
+            
+            document.getElementById('cancel-picture-edit')?.addEventListener('click', function() {
+                document.getElementById('picture-form').reset();
+                document.getElementById('picture-id').value = '';
+                document.getElementById('picture-price').value = '5000';
+                document.getElementById('picture-form-title').textContent = 'Add New Picture';
+                resetFilePreview();
+                this.style.display = 'none';
+            });
+            
+            // Icon preview
+            const iconInput = document.getElementById('folder-icon');
+            const iconPreview = document.getElementById('icon-preview');
+            
+            if (iconInput && iconPreview) {
+                iconInput.addEventListener('input', function() {
+                    try {
+                        iconPreview.className = this.value || 'fas fa-folder';
+                    } catch (e) {
+                        iconPreview.className = 'fas fa-folder';
+                    }
+                });
+            }
+            
+            // Upload guide modal
+            const uploadGuideBtn = document.getElementById('upload-guide-btn');
+            const closeUploadGuideBtn = document.getElementById('close-upload-guide');
+            const gotItBtn = document.getElementById('got-it-btn');
+            const uploadGuideModal = document.getElementById('upload-guide-modal');
+            
+            if (uploadGuideBtn) {
+                uploadGuideBtn.addEventListener('click', function() {
+                    uploadGuideModal.style.display = 'flex';
+                });
+            }
+            
+            if (closeUploadGuideBtn) {
+                closeUploadGuideBtn.addEventListener('click', function() {
+                    uploadGuideModal.style.display = 'none';
+                });
+            }
+            
+            if (gotItBtn) {
+                gotItBtn.addEventListener('click', function() {
+                    uploadGuideModal.style.display = 'none';
+                });
+            }
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === uploadGuideModal) {
+                    uploadGuideModal.style.display = 'none';
+                }
+                
+                const deleteModal = document.getElementById('delete-confirm-modal');
+                if (event.target === deleteModal) {
+                    deleteModal.style.display = 'none';
+                }
+            });
+            
+            // Delete confirmation modal functions
+            window.confirmDelete = function(type, id, name) {
+                const modal = document.getElementById('delete-confirm-modal');
+                const message = document.getElementById('delete-message');
+                const confirmBtn = document.getElementById('confirm-delete');
+                const cancelBtn = document.getElementById('cancel-delete');
+                
+                if (type === 'folder') {
+                    message.textContent = `Are you sure you want to delete the folder "${name}"? All pictures in this folder will also be deleted.`;
+                    confirmBtn.onclick = function() {
+                        if (typeof deleteFolder === 'function') {
+                            deleteFolder(id);
+                        }
+                        modal.style.display = 'none';
+                    };
+                } else if (type === 'picture') {
+                    message.textContent = `Are you sure you want to delete the picture "${name}"?`;
+                    confirmBtn.onclick = function() {
+                        if (typeof deletePicture === 'function') {
+                            deletePicture(id);
+                        }
+                        modal.style.display = 'none';
+                    };
+                }
+                
+                cancelBtn.onclick = function() {
+                    modal.style.display = 'none';
+                };
+                
+                modal.style.display = 'flex';
+            };
+        });
         
-        function showUploadGuide() {
-            document.getElementById('upload-guide-modal').style.display = 'flex';
-        }
-        
-        function closeUploadGuide() {
-            document.getElementById('upload-guide-modal').style.display = 'none';
+        // Helper function for file preview
+        function resetFilePreview() {
+            const preview = document.getElementById('image-preview');
+            if (preview) {
+                preview.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                        <p>Click or tap to select image</p>
+                        <small>Supports JPG, PNG, GIF, WebP (Max 10MB)</small>
+                    </div>
+                    <div class="upload-hint">
+                        <i class="fas fa-mobile-alt"></i> Works great on mobile!
+                    </div>
+                `;
+            }
         }
     </script>
 </body>

@@ -30,10 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoginButton();
     }
 
-    // Load initial data if empty
-    if (folders.length === 0) {
-        loadSampleData();
-    }
+    // Load existing data from localStorage without overwriting
+    loadExistingData();
 
     // Set up event listeners
     setupEventListeners();
@@ -44,9 +42,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Updated loadSampleData function
+// Load existing data without overwriting
+function loadExistingData() {
+    // Try to load existing data
+    const storedFolders = localStorage.getItem('folders');
+    const storedPictures = localStorage.getItem('pictures');
+    
+    if (storedFolders) {
+        try {
+            folders = JSON.parse(storedFolders);
+        } catch (e) {
+            console.error("Error parsing folders:", e);
+            folders = [];
+        }
+    }
+    
+    if (storedPictures) {
+        try {
+            pictures = JSON.parse(storedPictures);
+        } catch (e) {
+            console.error("Error parsing pictures:", e);
+            pictures = [];
+        }
+    }
+    
+    // If both are completely empty AND this is an admin session, create sample data
+    // Regular users should not create sample data
+    if (!storedFolders && !storedPictures && localStorage.getItem('currentUser')) {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.isAdmin) {
+            console.log("First-time admin setup - creating initial data");
+            loadSampleData();
+        }
+    }
+}
+
+// Only used for first-time admin setup
 function loadSampleData() {
-    // Start with just one empty folder
+    // Create initial folder
     folders = [
         {
             id: 1,
@@ -100,11 +133,6 @@ function setupEventListeners() {
         }
     });
 }
-
-
-
-
-
 
 // Show home page
 function showHomePage() {
@@ -162,18 +190,6 @@ function showContactPage() {
     const footer = document.getElementById('main-footer');
     if (footer) footer.style.display = 'none';
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Set active navigation link
 function setActiveNav(activeId) {
@@ -250,7 +266,7 @@ function openFolder(folderId) {
     renderPictures(folderId);
 }
 
-// FIXED: Render pictures for a specific folder
+// Render pictures for a specific folder
 function renderPictures(folderId) {
     const picturesGrid = document.getElementById('pictures-grid');
     if (!picturesGrid) return;
@@ -521,7 +537,7 @@ function setupAdminEventListeners() {
     if (folderForm) folderForm.addEventListener('submit', handleFolderSubmit);
     if (pictureForm) pictureForm.addEventListener('submit', handlePictureSubmit);
 
-    // File upload preview - FIXED VERSION
+    // File upload preview
     const fileInput = document.getElementById('picture-file');
     const preview = document.getElementById('image-preview');
 
@@ -569,6 +585,10 @@ function setupAdminEventListeners() {
             }
         });
     }
+    
+    // Add reset sample data button listener
+    const resetBtn = document.getElementById('reset-sample-btn');
+    if (resetBtn) resetBtn.addEventListener('click', resetToSampleData);
 }
 
 function resetFilePreview() {
@@ -604,7 +624,7 @@ function showDashboardSection(sectionId) {
         link.classList.remove('active');
     });
 
-    const activeLink = document.getElementById(`${sectionId}-link`);
+    const activeLink = document.getElementById(`${sectionId}-link');
     if (activeLink) {
         activeLink.classList.add('active');
     }
@@ -813,7 +833,6 @@ function handleFolderSubmit(e) {
     alert('Folder saved successfully!');
 }
 
-// FIXED: handlePictureSubmit with proper async handling
 function handlePictureSubmit(e) {
     e.preventDefault();
 
@@ -885,7 +904,7 @@ function handlePictureSubmit(e) {
     }
 }
 
-// FIXED: Unified function to save picture to storage
+// Unified function to save picture to storage
 function savePictureToStorage(pictureId, title, description, price, folderId, imageData, isEditing) {
     // Load fresh data
     pictures = JSON.parse(localStorage.getItem('pictures')) || [];
@@ -1089,6 +1108,28 @@ function deletePicture(pictureId) {
     updateAdminStats();
 
     alert('Picture deleted successfully!');
+}
+
+// Function to reset to sample data (admin only)
+function resetToSampleData() {
+    if (confirm('Warning: This will reset ALL data to sample data. Are you sure?')) {
+        folders = [
+            {
+                id: 1,
+                title: "My Pictures",
+                image: "fas fa-folder",
+                pictureCount: 0
+            }
+        ];
+        pictures = [];
+        saveToLocalStorage();
+        alert('Reset to sample data complete. Refresh the page.');
+        
+        // Reload admin dashboard
+        if (window.location.pathname.includes('admin.html')) {
+            showAdminDashboard();
+        }
+    }
 }
 
 // Export functions for use in HTML

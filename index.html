@@ -563,68 +563,6 @@
 
 
 
-
-
-
-
-
-
-        
-    // Simple fix for page navigation and footer
-    document.addEventListener('DOMContentLoaded', function() {
-        // Make sure home page is active initially
-        document.body.className = 'home-page';
-        document.getElementById('home-section').style.display = 'block';
-        
-        // Navigation click handlers
-        document.getElementById('home-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            hideAllPages();
-            document.getElementById('home-section').style.display = 'block';
-            document.body.className = 'home-page';
-            setActiveNav('home-link');
-            renderFolders();
-        });
-        
-        document.getElementById('gallery-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            hideAllPages();
-            document.getElementById('gallery-section').style.display = 'block';
-            document.body.className = 'gallery-page';
-            setActiveNav('gallery-link');
-            renderFolders();
-        });
-        
-        document.getElementById('about-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            hideAllPages();
-            document.getElementById('about-section').style.display = 'block';
-            document.body.className = 'about-page';
-            setActiveNav('about-link');
-        });
-        
-        document.getElementById('contact-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            hideAllPages();
-            document.getElementById('contact-section').style.display = 'block';
-            document.body.className = 'contact-page';
-            setActiveNav('contact-link');
-        });
-    });
-    
-    function hideAllPages() {
-        document.getElementById('home-section').style.display = 'none';
-        document.getElementById('gallery-section').style.display = 'none';
-        document.getElementById('about-section').style.display = 'none';
-        document.getElementById('contact-section').style.display = 'none';
-    }
-    
-    function setActiveNav(activeId) {
-        document.querySelectorAll('nav a').forEach(link => {
-            link.classList.remove('active');
-        });
-        document.getElementById(activeId).classList.add('active');
-    }
 </script>
 </body>
 </html>
